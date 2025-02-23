@@ -1,87 +1,259 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AkinRain's Blog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            background-image: url('https://i.postimg.cc/DzZdgtLh/1739354639086.jpg'); /* 二次元背景图链接 */
-            background-size: cover;
-            background-position: center;
-            color: white;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', sans-serif;
         }
-        header {
+
+        body {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                        url('https://picsum.photos/1920/1080?blur=5&grayscale') fixed;
+            background-size: cover;
+            color: #ecf0f1;
+            line-height: 1.6;
+        }
+
+        .header {
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
             display: flex;
             align-items: center;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.5);
         }
+
         .avatar {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            margin-right: 20px;
+            border: 2px solid var(--secondary-color);
+            margin-right: 1rem;
         }
-        h1 {
-            margin: 0;
-            font-size: 36px;
+
+        nav {
+            flex-grow: 1;
+            text-align: right;
         }
-        .info {
-            margin-left: 20px;
-        }
-        .info a {
-            color: #fff;
+
+        nav a {
+            color: white;
             text-decoration: none;
+            margin-left: 2rem;
+            transition: color 0.3s;
         }
-        .info a:hover {
-            text-decoration: underline;
+
+        nav a:hover {
+            color: var(--secondary-color);
         }
-        .content {
-            padding: 20px;
+
+        section {
+            padding: 100px 20px;
+            min-height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .contact {
-            margin-top: 40px;
-        }
-        footer {
+
+        .hero {
             text-align: center;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.5);
-            position: fixed;
+            padding-top: 150px;
+        }
+
+        .social-links {
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 0 1rem;
+            padding: 10px 20px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--secondary-color);
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        form {
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        input, textarea {
             width: 100%;
-            bottom: 0;
+            padding: 10px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--secondary-color);
+            color: white;
+        }
+
+        button {
+            background: var(--secondary-color);
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .form-notice {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <img src="https://i.postimg.cc/WbkGYGdD/mmexport1739089131832.jpg" alt="AkinRain's Avatar" class="avatar"> <!-- 头像图片链接 -->
-        <div class="info">
-            <h1>AkinRain</h1>
-            <p>Welcome to my personal blog!</p>
-            <p>Email: <a href="mailto:570848069@qq.com">570848069@qq.com</a></p>
-            <p>GitHub: <a href="https://github.com/AkinRain5828258" target="_blank">AkinRain5828258</a></p>
-        </div>
+    <header class="header">
+        <img src="https://via.placeholder.com/50" alt="头像" class="avatar">
+        <nav>
+            <a href="#home">首页</a>
+            <a href="#about">关于</a>
+            <a href="#projects">项目</a>
+            <a href="#contact">联系</a>
+        </nav>
     </header>
 
-    <div class="content">
-        <h2>About Me</h2>
-        <p>Hi! I'm AkinRain, a passionate web developer and anime lover. Welcome to my personal blog where I share my thoughts and projects.</p>
+    <section id="home" class="hero">
+        <h1>欢迎来到AkinRain的博客</h1>
+        <p>开发者 | 技术爱好者 | 二次元迷</p>
+        <div class="social-links">
+            <a href="https://github.com/AkinRain5828258" target="_blank">GitHub</a>
+            <a href="mailto:570848069@qq.com">QQ邮箱</a>
+            <a href="mailto:akinrain5828258@oniomail.org">联系邮箱</a>
+        </div>
+    </section>
 
-        <h2>Latest Posts</h2>
-        <p>Stay tuned for my upcoming blog posts!</p>
-    </div>
+    <section id="about">
+        <h2>关于我</h2>
+        <p>一位热爱编程和技术分享的开发者，专注于前端开发和开源项目。日常喜欢探索新技术和欣赏二次元文化。</p>
+        <div class="project-card" style="margin-top: 2rem;">
+            <h3>技术栈</h3>
+            <ul>
+                <li>HTML/CSS/JavaScript</li>
+                <li>Python</li>
+                <li>Git版本控制</li>
+            </ul>
+        </div>
+    </section>
 
-    <div class="contact">
-        <h2>Contact Me</h2>
-        <p>If you have any questions, feel free to <a href="mailto:akinrain5828258@oniomail.org">email me</a>.</p>
-    </div>
+    <section id="projects">
+        <h2>近期项目</h2>
+        <div class="project-grid">
+            <div class="project-card">
+                <h3>个人博客系统</h3>
+                <p>使用GitHub Pages搭建的静态博客，集成自动化部署</p>
+            </div>
+            <div class="project-card">
+                <h3>开源组件库</h3>
+                <p>基于Web Components的UI组件开发</p>
+            </div>
+        </div>
+    </section>
 
-    <footer>
-        <p>&copy; 2025 AkinRain. All rights reserved.</p>
-    </footer>
+    <section id="contact">
+        <h2>联系我</h2>
+        <div class="form-notice">
+            📧 表单提交需要邮件客户端支持，建议直接通过页面底部邮箱联系
+        </div>
+        <form action="mailto:akinrain5828258@oniomail.org" method="post" enctype="text/plain">
+            <input type="email" name="Email" placeholder="您的邮箱" required>
+            <textarea name="Message" rows="5" placeholder="留言内容" required></textarea>
+            <input type="hidden" name="_subject" value="来自博客的联系请求">
+            <button type="submit">发送消息</button>
+        </form>
+        <div class="social-links" style="margin-top:2rem;">
+            <a href="mailto:570848069@qq.com" style="margin:5px;">
+                <img src="https://img.icons8.com/color/48/000000/qq.png" width="24" alt="QQ">
+            </a>
+            <a href="mailto:akinrain5828258@oniomail.org" style="margin:5px;">
+                <img src="https://img.icons8.com/color/48/000000/email.png" width="24" alt="Email">
+            </a>
+        </div>
+    </section>
+
+    <script>
+        // 平滑滚动效果
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 导航栏高亮
+        window.addEventListener('scroll', () => {
+            let currentSection = '';
+            document.querySelectorAll('section').forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('nav a').forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(currentSection)) {
+                    a.classList.add('active');
+                }
+            });
+        });
+
+        // 表单提交提示
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if(!navigator.userAgent.match(/mobile/i)) {
+                alert('即将打开邮件客户端，请确认发送邮件后返回页面');
+            }
+        });
+    </script>
 </body>
 </html>
