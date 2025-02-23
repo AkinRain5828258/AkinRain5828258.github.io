@@ -1,116 +1,196 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberBlog - 赛博精神角落</title>
-    <!-- 动态主题引擎 -->
+    <title>数字沉思录 | 思想碎片收集器</title>
     <style>
+        /* 全局样式 */
         :root {
-            --matrix: #00ff00;
-            --bg: #000; --text: var(--matrix); 
-            --primary: #0f0; --gap: 1rem;
-            --scanline: linear-gradient(0deg, #0000000d 1px, #0000 1px);
+            --primary: #2c3e50;
+            --bg: #ffffff;
+            --text: #333;
+            --accent: #3498db;
+            --radius: 8px;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
+
+        [data-theme="dark"] {
+            --primary: #ecf0f1;
+            --bg: #1a1a1a;
+            --text: #e0e0e0;
+            --accent: #58a6ff;
+            --shadow: 0 2px 12px rgba(255,255,255,0.05);
+        }
+
         body {
-            background: var(--bg) var(--scanline);
-            color: var(--text); font-family: 'Courier New', monospace;
-            line-height: 1.6; min-height: 100vh;
-            animation: scan 1s linear infinite;
+            font-family: -apple-system, system-ui, sans-serif;
+            line-height: 1.6;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 2rem;
+            transition: all 0.3s;
         }
-        @keyframes scan {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 100vh; }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
         }
-        .cyber-container {
-            max-width: 800px; margin: 0 auto;
-            padding: var(--gap); position: relative;
-            border: 1px solid var(--primary);
-            box-shadow: 0 0 20px var(--primary);
+
+        /* 导航栏 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
         }
-        .neon {
-            text-shadow: 0 0 10px var(--primary);
+
+        /* 文章卡片 */
+        .article-card {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
         }
-        .glitch {
-            animation: glitch 2s infinite linear;
+
+        .article-card:hover {
+            transform: translateY(-2px);
         }
-        @keyframes glitch {
-            2% { clip-path: inset(20% 0 30% 0); }
-            4% { clip-path: inset(10% 0 40% 0); }
-            6% { clip-path: inset(40% 0 10% 0); }
-            8% { clip-path: inset(20% 0 30% 0); }
+
+        .article-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-excerpt {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* 标签系统 */
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: #f1f2f6;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+
+        /* 交互元素 */
+        .button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1.25rem;
+            background: var(--accent);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .button:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
-    <div class="cyber-container">
-        <!-- 动态导航系统 -->
-        <cyber-nav>
-            <h1 class="neon glitch">>_ CyberSpace</h1>
-            <div class="hud">
-                <button @click="toggleTheme">[THEME]</button>
-                <button @click="matrixMode">[MATRIX]</button>
-                <button @click="showEditor">[NEW_POST]</button>
+    <div class="container">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+            <h1>数字沉思录</h1>
+            <div>
+                <a href="#posts" class="button">全部文章</a>
+                <a href="#about" class="button">关于本站</a>
             </div>
-        </cyber-nav>
-        
-        <!-- 量子文章流 -->
-        <quantum-feed id="posts"></quantum-feed>
-        
-        <!-- 全息编辑器 -->
-        <cyber-editor hidden>
-            <textarea id="hologram" 
-                      @input="compilePreview"
-                      placeholder=">_ Begin your hack..."></textarea>
-            <div id="preview"></div>
-            <button @click="publish">[DEPLOY]</button>
-        </cyber-editor>
+        </nav>
+
+        <!-- 文章列表 -->
+        <div id="posts">
+            <article class="article-card">
+                <h2 class="article-title">如何打造高效数字工作流</h2>
+                <div class="article-meta">
+                    <span>📅 2024-03-15</span>
+                    <span>⏱️ 8分钟阅读</span>
+                </div>
+                <div class="article-excerpt">
+                    <p>在信息爆炸的时代，我们需要更智能的工具管理知识资产。本文将介绍如何通过开源工具构建个人知识管理系统...</p>
+                </div>
+                <div class="tags">
+                    <span class="tag">效率工具</span>
+                    <span class="tag">数字生活</span>
+                </div>
+            </article>
+
+            <article class="article-card">
+                <h2 class="article-title">现代CSS设计模式实践</h2>
+                <div class="article-meta">
+                    <span>📅 2024-03-14</span>
+                    <span>⏱️ 12分钟阅读</span>
+                </div>
+                <div class="article-excerpt">
+                    <p>探索CSS Grid与Flexbox的进阶用法，打造响应式布局的最佳实践...</p>
+                </div>
+                <div class="tags">
+                    <span class="tag">前端开发</span>
+                    <span class="tag">CSS</span>
+                </div>
+            </article>
+        </div>
+
+        <!-- 关于页面 -->
+        <div id="about" style="display:none;">
+            <article class="article-card">
+                <h2 class="article-title">关于本站</h2>
+                <div class="article-excerpt">
+                    <p>这里是数字时代的思维花园，记录技术探索与生活洞察。构建于GitHub Pages，采用无服务架构。</p>
+                    <p>📌 技术栈：HTML5 + CSS3 + Vanilla JS</p>
+                    <p>🌱 开源地址：github.com/yourusername/blog</p>
+                </div>
+            </article>
+        </div>
     </div>
 
-<script type="module">
-// 量子存储系统
-class QuantumDB {
-    constructor() {
-        this.posts = JSON.parse(localStorage.getItem('cyberPosts') || [
-            {
-                id: crypto.randomUUID(),
-                title: "欢迎来到赛博空间",
-                content: `## 可用指令\n\`\`\`js\n// 量子纠缠功能\nawait blog.entangle({\n  theme: 'matrix',\n  effect: 'glitch'\n})\n\`\`\``,
-                timestamp: Date.now(),
-                metadata: {
-                    views: 0,
-                    hash: null
-                }
-            }
-        ]
-    }
+<script>
+// 交互功能增强
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelectorAll('[id]').forEach(el => el.style.display = 'none');
+        document.querySelector(this.getAttribute('href')).style.display = 'block';
+    });
+});
 
-    async entangle(post) {
-        post.metadata.hash = await this.#generateHash(post.content)
-        this.posts.push(post)
-        localStorage.setItem('cyberPosts', JSON.stringify(this.posts))
-    }
-
-    async #generateHash(content) {
-        const buffer = new TextEncoder().encode(content)
-        const hash = await crypto.subtle.digest('SHA-256', buffer)
-        return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('')
-    }
-}
-
-// 赛博核心
-const blog = {
-    db: new QuantumDB(),
-    state: {
-        theme: 'matrix',
-        editor: {
-            draft: '',
-            compiled: ''
-        }
-    },
-
-    // 量子渲染
-    render() {
+// 暗色模式切换
+const themeToggle = document.createElement('button');
+themeToggle.className = 'button';
+themeToggle.style.position = 'fixed';
+themeToggle.style.bottom = '2rem';
+themeToggle.style.right = '2rem';
+themeToggle.textContent = '🌓';
+themeToggle.onclick = () => {
+    document.documentElement.setAttribute('data-theme',
+        document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
+    );
+};
+document.body.appendChild(themeToggle);
+</script>
+</body>
+</html>    render() {
         const parser = new DOMParser()
         const feed = this.db.posts.map(post => `
             <cyber-post id="${post.id}">
