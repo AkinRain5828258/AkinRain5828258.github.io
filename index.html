@@ -1,264 +1,87 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数字沉思录 | 思想碎片收集器</title>
+    <title>AkinRain's Blog</title>
     <style>
-        /* 全局样式 */
-        :root {
-            --primary: #2c3e50;
-            --bg: #ffffff;
-            --text: #333;
-            --accent: #3498db;
-            --radius: 8px;
-            --shadow: 0 2px 12px rgba(0,0,0,0.08);
-        }
-
-        [data-theme="dark"] {
-            --primary: #ecf0f1;
-            --bg: #1a1a1a;
-            --text: #e0e0e0;
-            --accent: #58a6ff;
-            --shadow: 0 2px 12px rgba(255,255,255,0.05);
-        }
-
         body {
-            font-family: -apple-system, system-ui, sans-serif;
-            line-height: 1.6;
-            background: var(--bg);
-            color: var(--text);
+            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 2rem;
-            transition: all 0.3s;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* 导航栏 */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 3rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--primary);
-        }
-
-        /* 文章卡片 */
-        .article-card {
-            background: var(--bg);
-            border-radius: var(--radius);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
-            transition: transform 0.2s;
-        }
-
-        .article-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .article-title {
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-
-        .article-meta {
-            display: flex;
-            gap: 1rem;
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .article-excerpt {
-            color: #666;
-            line-height: 1.7;
-        }
-
-        /* 标签系统 */
-        .tag {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: #f1f2f6;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-right: 0.5rem;
-        }
-
-        /* 交互元素 */
-        .button {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.5rem 1.25rem;
-            background: var(--accent);
+            padding: 0;
+            background-image: url('https://example.com/your-anime-background.jpg'); /* 二次元背景图链接 */
+            background-size: cover;
+            background-position: center;
             color: white;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: opacity 0.2s;
         }
-
-        .button:hover {
-            opacity: 0.9;
+        header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        .info {
+            margin-left: 20px;
+        }
+        .info a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .info a:hover {
+            text-decoration: underline;
+        }
+        .content {
+            padding: 20px;
+        }
+        .contact {
+            margin-top: 40px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            width: 100%;
+            bottom: 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 导航栏 -->
-        <nav class="navbar">
-            <h1>数字沉思录</h1>
-            <div>
-                <a href="#posts" class="button">全部文章</a>
-                <a href="#about" class="button">关于本站</a>
-            </div>
-        </nav>
-
-        <!-- 文章列表 -->
-        <div id="posts">
-            <article class="article-card">
-                <h2 class="article-title">如何打造高效数字工作流</h2>
-                <div class="article-meta">
-                    <span>📅 2024-03-15</span>
-                    <span>⏱️ 8分钟阅读</span>
-                </div>
-                <div class="article-excerpt">
-                    <p>在信息爆炸的时代，我们需要更智能的工具管理知识资产。本文将介绍如何通过开源工具构建个人知识管理系统...</p>
-                </div>
-                <div class="tags">
-                    <span class="tag">效率工具</span>
-                    <span class="tag">数字生活</span>
-                </div>
-            </article>
-
-            <article class="article-card">
-                <h2 class="article-title">现代CSS设计模式实践</h2>
-                <div class="article-meta">
-                    <span>📅 2024-03-14</span>
-                    <span>⏱️ 12分钟阅读</span>
-                </div>
-                <div class="article-excerpt">
-                    <p>探索CSS Grid与Flexbox的进阶用法，打造响应式布局的最佳实践...</p>
-                </div>
-                <div class="tags">
-                    <span class="tag">前端开发</span>
-                    <span class="tag">CSS</span>
-                </div>
-            </article>
+    <header>
+        <img src="https://example.com/your-avatar.jpg" alt="AkinRain's Avatar" class="avatar"> <!-- 头像图片链接 -->
+        <div class="info">
+            <h1>AkinRain</h1>
+            <p>Welcome to my personal blog!</p>
+            <p>Email: <a href="mailto:570848069@qq.com">570848069@qq.com</a></p>
+            <p>GitHub: <a href="https://github.com/AkinRain5828258" target="_blank">AkinRain5828258</a></p>
         </div>
+    </header>
 
-        <!-- 关于页面 -->
-        <div id="about" style="display:none;">
-            <article class="article-card">
-                <h2 class="article-title">关于本站</h2>
-                <div class="article-excerpt">
-                    <p>这里是数字时代的思维花园，记录技术探索与生活洞察。构建于GitHub Pages，采用无服务架构。</p>
-                    <p>📌 技术栈：HTML5 + CSS3 + Vanilla JS</p>
-                    <p>🌱 开源地址：github.com/yourusername/blog</p>
-                </div>
-            </article>
-        </div>
+    <div class="content">
+        <h2>About Me</h2>
+        <p>Hi! I'm AkinRain, a passionate web developer and anime lover. Welcome to my personal blog where I share my thoughts and projects.</p>
+
+        <h2>Latest Posts</h2>
+        <p>Stay tuned for my upcoming blog posts!</p>
     </div>
 
-<script>
-// 交互功能增强
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelectorAll('[id]').forEach(el => el.style.display = 'none');
-        document.querySelector(this.getAttribute('href')).style.display = 'block';
-    });
-});
+    <div class="contact">
+        <h2>Contact Me</h2>
+        <p>If you have any questions, feel free to <a href="mailto:akinrain5828258@oniomail.org">email me</a>.</p>
+    </div>
 
-// 暗色模式切换
-const themeToggle = document.createElement('button');
-themeToggle.className = 'button';
-themeToggle.style.position = 'fixed';
-themeToggle.style.bottom = '2rem';
-themeToggle.style.right = '2rem';
-themeToggle.textContent = '🌓';
-themeToggle.onclick = () => {
-    document.documentElement.setAttribute('data-theme',
-        document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
-    );
-};
-document.body.appendChild(themeToggle);
-</script>
-</body>
-</html>    render() {
-        const parser = new DOMParser()
-        const feed = this.db.posts.map(post => `
-            <cyber-post id="${post.id}">
-                <h2 class="neon">${post.title}</h2>
-                <div class="content">${marked.parse(post.content)}</div>
-                <div class="metadata">
-                    <span>Views: ${post.metadata.views++}</span>
-                    <span>Hash: ${post.metadata.hash.slice(0,8)}</span>
-                </div>
-            </cyber-post>
-        `).join('')
-        document.getElementById('posts').innerHTML = feed
-    },
-
-    // 编译预览
-    compilePreview(content) {
-        const md = marked.parse(content)
-        const $preview = document.getElementById('preview')
-        $preview.innerHTML = md
-        hljs.highlightAll()
-    }
-}
-
-// 终端指令系统
-class CyberTerminal {
-    constructor() {
-        this.commands = new Map()
-            .set('theme', this.#changeTheme)
-            .set('search', this.#searchPosts)
-    }
-
-    execute(cmd) {
-        const [command, ...args] = cmd.split(' ')
-        if (this.commands.has(command)) {
-            this.commands.get(command)(args)
-        }
-    }
-
-    #changeTheme(args) {
-        document.documentElement.style.setProperty('--primary', args[0])
-    }
-}
-
-// 初始化量子纠缠
-window.addEventListener('DOMContentLoaded', async () => {
-    await customElements.define('cyber-post', class extends HTMLElement {
-        constructor() {
-            super()
-            this.attachShadow({ mode: 'open' })
-            this.shadowRoot.innerHTML = `
-                <style>
-                    :host { display: block; border: 1px solid var(--primary); margin: 1rem 0; }
-                    ::selection { background: var(--matrix); color: #000; }
-                </style>
-                <slot></slot>
-            `
-        }
-    })
-
-    // 加载核心模块
-    if (!window.marked) await import('https://cdn.jsdelivr.net/npm/marked/marked.min.js')
-    if (!window.hljs) await import('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/es/highlight.min.js')
-    
-    blog.render()
-})
-
-// 接入Web3协议（可选）
-// navigator.serviceWorker.register('/sw.js')
-</script>
+    <footer>
+        <p>&copy; 2025 AkinRain. All rights reserved.</p>
+    </footer>
 </body>
 </html>
