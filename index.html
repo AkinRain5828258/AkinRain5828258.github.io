@@ -1,229 +1,367 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <!-- 头部元信息保持不变，新增字体和图标 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AkinRain | 数字花园</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* 新增视觉增强样式 */
-        
-        /* 动态渐变背景 */
-        .header::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 40%;
-            background: linear-gradient(45deg, #88c0d055 0%, #81a1c155 100%);
-            z-index: -1;
+        /* 基础重置与变量定义 */
+        :root {
+            --primary-text: #2c3e50;
+            --secondary-text: #95a5a6;
+            --accent-color: #3498db;
+            --bg-color: #ffffff;
+            --card-bg: #f8f9fa;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
         }
 
-        /* 粒子动画效果 */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: -1;
+        [data-theme="dark"] {
+            --primary-text: #ecf0f1;
+            --secondary-text: #bdc3c7;
+            --accent-color: #1abc9c;
+            --bg-color: #2d3436;
+            --card-bg: #404040;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
-        /* 卡片悬浮效果增强 */
-        .article-card {
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .article-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 25%,
-                rgba(136, 192, 208, 0.1) 50%,
-                transparent 75%
-            );
-            transform: rotate(45deg);
-            opacity: 0;
-            transition: opacity 0.5s;
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
         }
 
-        .article-card:hover::before {
-            opacity: 1;
-            animation: shine 2s infinite;
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.8;
+            color: var(--primary-text);
+            background-color: var(--bg-color);
+            transition: var(--transition);
         }
 
-        @keyframes shine {
-            0% { transform: rotate(45deg) translateX(-100%); }
-            100% { transform: rotate(45deg) translateX(100%); }
-        }
-
-        /* 标签动态效果 */
-        .tag {
-            transition: all 0.3s ease;
+        /* 头部样式 */
+        .hero-section {
+            padding: 3rem 1rem;
+            text-align: center;
             position: relative;
             overflow: hidden;
         }
 
-        .tag::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent 0%,
-                rgba(255,255,255,0.3) 50%,
-                transparent 100%
-            );
-            transition: left 0.5s;
-        }
-
-        .tag:hover::after {
-            left: 100%;
-        }
-
-        /* 统计卡片3D效果 */
-        .stat-item {
+        .avatar-container {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 1.5rem;
+            position: relative;
             perspective: 1000px;
         }
 
-        .stat-item-inner {
-            transition: transform 0.6s;
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid var(--accent-color);
+            background: url('data:image/png;base64,YOUR_AVATAR_BASE64') center/cover;
             transform-style: preserve-3d;
+            transition: var(--transition);
+        }
+
+        .avatar:hover {
+            transform: rotateY(15deg) scale(1.05);
+        }
+
+        /* 社交链接 */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .social-card {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-card::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                var(--accent-color) 0%, 
+                rgba(52, 152, 219, 0.2) 100%);
+            transform: translate(-25%, -25%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .social-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .social-card:hover::before {
+            opacity: 1;
+        }
+
+        /* 个人介绍卡片 */
+        .profile-card {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
             position: relative;
         }
 
-        .stat-item:hover .stat-item-inner {
-            transform: rotateY(180deg);
+        .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
         }
 
-        /* 新增时间线样式 */
+        .badge {
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            background: var(--accent-color);
+            color: white;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* 时间轴样式 */
         .timeline {
             position: relative;
+            max-width: 700px;
+            margin: 3rem auto;
             padding: 2rem 0;
         }
 
-        .timeline::before {
+        .timeline-item {
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            background: var(--card-bg);
+            border-radius: 16px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .timeline-item::before {
             content: '';
             position: absolute;
-            left: 50%;
-            top: 0;
-            width: 2px;
+            left: -15px;
+            top: 24px;
+            width: 30px;
+            height: 30px;
+            background: var(--accent-color);
+            border-radius: 50%;
+        }
+
+        /* 技能图表 */
+        .skill-chart {
+            display: grid;
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .skill-bar {
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-progress {
             height: 100%;
             background: var(--accent-color);
+            border-radius: 6px;
+            transition: width 1s ease-in-out;
         }
 
-        /* 新增加载动画 */
-        .loader {
-            animation: spin 1s linear infinite;
-            border: 3px solid var(--secondary-color);
-            border-top-color: var(--accent-color);
+        /* 主题切换按钮 */
+        .theme-switcher {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @media (max-width: 480px) {
+            html {
+                font-size: 14px;
+            }
+            
+            .profile-card {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
         }
     </style>
 </head>
 <body>
-    <!-- 新增粒子动画容器 -->
-    <canvas class="particles"></canvas>
+    <div class="theme-switcher" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+    </div>
 
-    <!-- 增强版头部 -->
-    <header class="header">
-        <div class="avatar"></div>
+    <section class="hero-section">
+        <div class="avatar-container floating">
+            <div class="avatar"></div>
+        </div>
         <h1>AkinRain</h1>
+        <p class="subtitle">数字工匠 & 创意开发者</p>
+        
         <div class="social-links">
-            <a href="mailto:570848069@qq.com" class="social-icon">
-                <i class="fas fa-envelope"></i>
+            <a href="mailto:570848069@qq.com" class="social-card">
+                <i class="fas fa-envelope" style="font-size: 1.5rem;"></i>
             </a>
-            <a href="https://github.com/AkinRain5828258" class="social-icon">
-                <i class="fab fa-github"></i>
+            <a href="https://github.com/AkinRain5828258" class="social-card">
+                <i class="fab fa-github" style="font-size: 1.5rem;"></i>
             </a>
+            <div class="social-card">
+                <i class="fas fa-cube" style="font-size: 1.5rem;"></i>
+            </div>
         </div>
-    </header>
+    </section>
 
-    <!-- 新增分类导航 -->
-    <nav class="category-nav">
-        <div class="category-tags">
-            <button class="category-tag active" data-category="all">全部</button>
-            <button class="category-tag" data-category="tech">技术</button>
-            <button class="category-tag" data-category="life">生活</button>
+    <div class="profile-card">
+        <h2>关于我</h2>
+        <p class="bio-text">
+            全栈开发者，Minecraft模组创作者，开源爱好者。<br>
+            在数字世界与现实世界的交界处建造诗意居所。
+        </p>
+
+        <div class="badge-list">
+            <div class="badge">
+                <i class="fas fa-code"></i>
+                GitHub: AkinRain5828258
+            </div>
+            <div class="badge">
+                <i class="fas fa-cube"></i>
+                Minecraft: AkinRain5828258
+            </div>
         </div>
-    </nav>
 
-    <!-- 其他原有结构保持不变 -->
+        <div class="skill-chart">
+            <div class="skill-item">
+                <label>全栈开发</label>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 85%"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <label>三维建模</label>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 75%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="timeline">
+        <div class="timeline-item">
+            <h3>🚀 开发旅程启航</h3>
+            <p class="timeline-date">2018 - 至今</p>
+            <ul class="timeline-content">
+                <li>开发超过20个Minecraft模组</li>
+                <li>参与多个开源项目维护</li>
+                <li>全栈项目开发经验</li>
+            </ul>
+        </div>
+
+        <div class="timeline-item">
+            <h3>🏆 高光时刻</h3>
+            <p class="timeline-date">2023 CurseForge年度模组提名</p>
+            <ul class="timeline-content">
+                <li>最佳技术实现模组</li>
+                <li>社区最受欢迎模组TOP10</li>
+            </ul>
+        </div>
+    </section>
 
     <script>
-        // 新增粒子系统
-        class ParticleSystem {
-            constructor(canvas) {
-                this.canvas = canvas;
-                this.ctx = canvas.getContext('2d');
-                this.particles = [];
-                this.resize();
-                window.addEventListener('resize', () => this.resize());
-            }
+        // 主题切换功能
+        let currentTheme = localStorage.getItem('theme') || 'light';
+        const themeIcon = document.querySelector('.theme-switcher i');
 
-            resize() {
-                this.width = this.canvas.width = window.innerWidth;
-                this.height = this.canvas.height = window.innerHeight;
-            }
-
-            // 粒子动画逻辑...
+        function updateTheme() {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            themeIcon.className = currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('theme', currentTheme);
         }
 
-        // 增强版初始化函数
-        function initBlog() {
-            // 初始化粒子系统
-            const canvas = document.querySelector('.particles');
-            new ParticleSystem(canvas);
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            updateTheme();
+        }
 
-            // 动态加载文章
-            setTimeout(() => {
-                articles.forEach(article => {
-                    // 增强版卡片生成逻辑
-                    const card = createArticleCard(article);
-                    applyCardEffects(card);
+        // 初始化
+        window.onload = () => {
+            updateTheme();
+            
+            // 初始化技能条动画
+            document.querySelectorAll('.skill-progress').forEach(progress => {
+                progress.style.width = '0';
+                setTimeout(() => {
+                    progress.style.width = progress.getAttribute('data-width');
+                }, 500);
+            });
+
+            // 时间轴交互动画
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    item.style.transform = 'translateX(10px)';
                 });
-                
-                // 初始化分类过滤
-                initCategoryFilter();
-                
-                // 初始化滚动动画
-                initScrollAnimations();
-            }, 500);
-        }
-
-        // 新增卡片特效函数
-        function applyCardEffects(card) {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.transform = `
-                    perspective(1000px)
-                    rotateX(${(y - rect.height/2) / 20}deg)
-                    rotateY(${-(x - rect.width/2) / 20}deg)
-                `;
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'translateX(0)';
+                });
             });
+        };
 
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'none';
-            });
-        }
-
-        // 其他增强功能...
+        // 视差滚动效果
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelector('.avatar-container').style.transform = 
+                `rotate(${scrolled * 0.2}deg) scale(${1 + scrolled * 0.0005})`;
+        });
     </script>
 </body>
 </html>
