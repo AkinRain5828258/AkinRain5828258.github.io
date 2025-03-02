@@ -59,21 +59,33 @@
         .seed-info ul li {
             margin: 10px 0;
         }
+        #loading {
+            display: none;
+            color: #4CAF50;
+            font-size: 18px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <h1>Minecraft 种子地图显示器</h1>
     <div class="input-container">
         <input type="text" id="seedInput" placeholder="输入种子">
+        <select id="gameType">
+            <option value="java">Java 版</option>
+            <option value="bedrock">基岩版</option>
+        </select>
         <select id="versionSelect">
             <option value="1.20">1.20</option>
             <option value="1.19">1.19</option>
             <option value="1.18">1.18</option>
             <option value="1.17">1.17</option>
             <option value="1.16">1.16</option>
+            <option value="1.12">1.12</option>
         </select>
         <button onclick="loadMap()">加载地图</button>
     </div>
+    <div id="loading">加载中，请稍候...</div>
     <div class="map-container">
         <iframe id="mapFrame" src=""></iframe>
     </div>
@@ -81,6 +93,7 @@
         <h2>种子信息</h2>
         <ul>
             <li><strong>种子：</strong><span id="seedValue">未加载</span></li>
+            <li><strong>游戏类型：</strong><span id="gameTypeValue">未加载</span></li>
             <li><strong>版本：</strong><span id="versionValue">未加载</span></li>
             <li><strong>出生点坐标：</strong><span id="spawnCoords">未加载</span></li>
             <li><strong>特殊地形：</strong><span id="specialTerrain">未加载</span></li>
@@ -89,7 +102,8 @@
 
     <script>
         function loadMap() {
-            const seed = document.getElementById('seedInput').value;
+            const seed = document.getElementById('seedInput').value.trim();
+            const gameType = document.getElementById('gameType').value;
             const version = document.getElementById('versionSelect').value;
 
             if (!seed) {
@@ -97,22 +111,55 @@
                 return;
             }
 
-            // 使用 Chunkbase 的 Seed Map 功能
-            const mapUrl = `https://www.chunkbase.com/apps/seed-map#${seed}${version ? `&version=${version}` : ''}`;
+            // 显示加载提示
+            document.getElementById('loading').style.display = 'block';
+
+            // 根据游戏类型和版本生成地图 URL
+            let mapUrl;
+            if (gameType === "java") {
+                // Java 版使用 MineAtlas
+                mapUrl = `http://mineatlas.com/?seed=${seed}`;
+            } else if (gameType === "bedrock") {
+                // 基岩版使用 Chunkbase（或其他支持基岩版的工具）
+                mapUrl = `https://chunkbase.com/apps/seed-map#${seed}&version=${version}`;
+            }
+
+            // 加载地图
             document.getElementById('mapFrame').src = mapUrl;
 
-            // 显示种子信息
-            document.getElementById('seedValue').textContent = seed;
-            document.getElementById('versionValue').textContent = version;
+            // 隐藏加载提示
+            document.getElementById('mapFrame').onload = function() {
+                document.getElementById('loading').style.display = 'none';
+            };
 
-            // 模拟生成出生点坐标和特殊地形信息
-            const spawnX = Math.floor(Math.random() * 1000) - 500;
-            const spawnZ = Math.floor(Math.random() * 1000) - 500;
-            document.getElementById('spawnCoords').textContent = `X: ${spawnX}, Z: ${spawnZ}`;
+            // 错误处理
+            document.getElementById('mapFrame').onerror = function() {
+                alert('无法加载地图，请检查网络连接或稍后重试。');
+                document.getElementById('loading').style.display = 'none';
+            };
 
+            // 更新种子信息
+            updateSeedInfo(seed, gameType, version);
+        }
+
+        function generateSpawnCoords(seed) {
+            const spawnX = (seed % 1000) - 500;
+            const spawnZ = ((seed * 2) % 1000) - 500;
+            return `X: ${spawnX}, Z: ${spawnZ}`;
+        }
+
+        function generateSpecialTerrain(seed) {
             const terrains = ['平原', '森林', '山脉', '沙漠', '海洋'];
-            const randomTerrain = terrains[Math.floor(Math.random() * terrains.length)];
-            document.getElementById('specialTerrain').textContent = randomTerrain;
+            const index = seed % terrains.length;
+            return terrains[index];
+        }
+
+        function updateSeedInfo(seed, gameType, version) {
+            document.getElementById('seedValue').textContent = seed;
+            document.getElementById('gameTypeValue').textContent = gameType === "java" ? "Java 版" : "基岩版";
+            document.getElementById('versionValue').textContent = version;
+            document.getElementById('spawnCoords').textContent = generateSpawnCoords(seed);
+            document.getElementById('specialTerrain').textContent = generateSpecialTerrain(seed);
         }
     </script>
 </body>
