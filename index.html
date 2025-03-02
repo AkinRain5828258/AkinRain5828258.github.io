@@ -345,6 +345,336 @@
         <ul>
             <li><a href="akinrain5828258.github.io">首页</a></li>
             <li><a href="text/gy.html">关于</a></li>
+            <li><a href="text/gd.html">归档</a></li>
+        </ul>
+        <h3>推荐</h3>
+        <ul>
+            <a href="https://www.alzirr.top">Alzirr 服务器</a>
+            <li><a href="tool/cptool.html">手撕平方根</a></li>
+            <li><a href="tool/mcseed.html">种子图查看</a><li>
+        </ul>
+        <h3>分类</h3>
+        <ul>
+            <li><a href="#">技术</a></li>
+            <li><a href="#">生活</a></li>
+            <li><a href="#">随笔</a></li>
+        </ul>
+    </div>
+
+    <!-- 主题切换按钮 -->
+    <div class="theme-switcher" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- 头部 -->
+    <section class="hero-section">
+        <div class="avatar-container floating">
+            <div class="avatar"></div>
+        </div>
+        <h1>AkinRain</h1>
+        <p class="subtitle">数字工匠 & 创意开发者</p>
+        
+        <div class="social-links">
+            <a href="mailto:570848069@qq.com" class="social-card">
+                <i class="fas fa-envelope" style="font-size: 1.5rem;"></i>
+            </a>
+            <a href="https://github.com/AkinRain5828258" class="social-card">
+                <i class="fab fa-github" style="font-size: 1.5rem;"></i>
+            </a>
+            <div class="social-card">
+                <i class="fas fa-cube" style="font-size: 1.5rem;"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- 个人介绍卡片 -->
+    <div class="profile-card">
+        <h2>关于我</h2>
+        <p class="bio-text">
+            全栈开发者，Minecraft模组创作者，开源爱好者。<br>
+            在数字世界与现实世界的交界处建造诗意居所。
+        </p>
+
+        <div class="badge-list">
+            <div class="badge">
+                <i class="fas fa-code"></i>
+                GitHub: AkinRain5828258
+            </div>
+            <div class="badge">
+                <i class="fas fa-cube"></i>
+                Minecraft: AkinRain5828258
+            </div>
+        </div>
+
+        <div class="skill-chart">
+            <div class="skill-item">
+                <label>挖掘插件漏洞</label>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 85%"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <label>皮肤审美</label>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 75%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 时间轴 -->
+    <section class="timeline">
+        <div class="timeline-item">
+            <h3>🚀 开发旅程启航</h3>
+            <p class="timeline-date">2018 - 至今</p>
+            <ul class="timeline-content">
+                <li>至今游戏龄超7年</li>
+                <li>游戏特性全方位渗透</li>
+                <li> PvP37连胜</li>
+            </ul>
+        </div>
+
+        <div class="timeline-item">
+            <h3>🏆 高光时刻</h3>
+            <p class="timeline-date">获得披风</p>
+            <ul class="timeline-content">
+                <li>获得Switch者披风</li>
+                <li>获得tiktok披风</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <div class="footer">
+        <p>© 2025 AkinRain5828258. 由 <a href="https://github.com/AkinRain5828258" target="_blank">GitHub Pages</a> 强力驱动.</p>
+    </div>
+
+    <script>
+        // 侧边栏切换功能
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            sidebar.classList.toggle('active');
+            sidebarToggle.classList.toggle('hide');
+        }
+
+        // 点击页面其他部分收起侧边栏
+        document.addEventListener('click', (event) => {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const isClickInsideSidebar = sidebar.contains(event.target);
+            const isClickOnToggle = sidebarToggle.contains(event.target);
+
+            if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('active')) {
+                toggleSidebar();
+            }
+        });
+
+        // 主题切换功能
+        let currentTheme = localStorage.getItem('theme') || 'light';
+        const themeIcon = document.querySelector('.theme-switcher i');
+
+        function updateTheme() {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            themeIcon.className = currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('theme', currentTheme);
+        }
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            updateTheme();
+        }
+
+        // 初始化
+        window.onload = () => {
+            updateTheme();
+            
+            // 初始化技能条动画
+            document.querySelectorAll('.skill-progress').forEach(progress => {
+                progress.style.width = '0';
+                setTimeout(() => {
+                    progress.style.width = progress.getAttribute('data-width');
+                }, 500);
+            });
+
+            // 时间轴交互动画
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    item.style.transform = 'translateX(10px)';
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'translateX(0)';
+                });
+            });
+        };
+
+        // 视差滚动效果
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelector('.avatar-container').style.transform = 
+                `rotate(${scrolled * 0.2}deg) scale(${1 + scrolled * 0.0005})`;
+        });
+    </script>
+</body>
+</html>
+
+        /* 个人介绍卡片 */
+        .profile-card {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .badge {
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            background: var(--accent-color);
+            color: white;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* 时间轴样式 */
+        .timeline {
+            position: relative;
+            max-width: 700px;
+            margin: 3rem auto;
+            padding: 2rem 0;
+        }
+
+        .timeline-item {
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            background: var(--card-bg);
+            border-radius: 16px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 24px;
+            width: 30px;
+            height: 30px;
+            background: var(--accent-color);
+            border-radius: 50%;
+        }
+
+        /* 技能图表 */
+        .skill-chart {
+            display: grid;
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .skill-bar {
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: var(--accent-color);
+            border-radius: 6px;
+            transition: width 1s ease-in-out;
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* 主题切换按钮 */
+        .theme-switcher {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            html {
+                font-size: 14px;
+            }
+            
+            .profile-card {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- 侧边栏按钮 -->
+    <div class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- 侧边栏 -->
+    <div class="sidebar" id="sidebar">
+        <h3>导航</h3>
+        <ul>
+            <li><a href="akinrain5828258.github.io">首页</a></li>
+            <li><a href="text/gy.html">关于</a></li>
             <li><a href="#">归档</a></li>
             <a href="https://www.alzirr.top">Alzirr 服务器</a>
             <li><a href="tool/cptool.html">手撕平方根</a></li>
