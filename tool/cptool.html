@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手撕平方根计算器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>手撕平方根计算器</h1>
+        <label for="number">请输入一个正数：</label>
+        <input type="number" id="number" placeholder="例如：25" min="0" step="any">
+        <button onclick="calculateSquareRoot()">计算平方根</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateSquareRoot() {
+            // 获取用户输入
+            const number = parseFloat(document.getElementById("number").value);
+            const resultElement = document.getElementById("result");
+
+            // 检查输入是否有效
+            if (isNaN(number) || number < 0) {
+                resultElement.textContent = "请输入一个有效的正数！";
+                return;
+            }
+
+            // 牛顿迭代法计算平方根
+            let guess = number / 2; // 初始猜测值
+            const precision = 0.000001; // 精度
+            let difference = 1;
+
+            while (difference > precision) {
+                const newGuess = (guess + number / guess) / 2;
+                difference = Math.abs(newGuess - guess);
+                guess = newGuess;
+            }
+
+            // 显示结果
+            resultElement.textContent = `√${number} ≈ ${guess.toFixed(6)}`;
+        }
+    </script>
+</body>
+</html>
