@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft 种子地图显示器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .input-container {
+            margin-bottom: 20px;
+        }
+        input, select, button {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .map-container {
+            margin-top: 20px;
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .seed-info {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .seed-info h2 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+        .seed-info ul {
+            list-style: none;
+            padding: 0;
+        }
+        .seed-info ul li {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Minecraft 种子地图显示器</h1>
+    <div class="input-container">
+        <input type="text" id="seedInput" placeholder="输入种子">
+        <select id="versionSelect">
+            <option value="1.20">1.20</option>
+            <option value="1.19">1.19</option>
+            <option value="1.18">1.18</option>
+            <option value="1.17">1.17</option>
+            <option value="1.16">1.16</option>
+        </select>
+        <button onclick="loadMap()">加载地图</button>
+    </div>
+    <div class="map-container">
+        <iframe id="mapFrame" src=""></iframe>
+    </div>
+    <div class="seed-info" id="seedInfo">
+        <h2>种子信息</h2>
+        <ul>
+            <li><strong>种子：</strong><span id="seedValue">未加载</span></li>
+            <li><strong>版本：</strong><span id="versionValue">未加载</span></li>
+            <li><strong>出生点坐标：</strong><span id="spawnCoords">未加载</span></li>
+            <li><strong>特殊地形：</strong><span id="specialTerrain">未加载</span></li>
+        </ul>
+    </div>
+
+    <script>
+        function loadMap() {
+            const seed = document.getElementById('seedInput').value;
+            const version = document.getElementById('versionSelect').value;
+
+            if (!seed) {
+                alert('请输入种子！');
+                return;
+            }
+
+            // 使用 Chunkbase 的 Seed Map 功能
+            const mapUrl = `https://www.chunkbase.com/apps/seed-map#${seed}${version ? `&version=${version}` : ''}`;
+            document.getElementById('mapFrame').src = mapUrl;
+
+            // 显示种子信息
+            document.getElementById('seedValue').textContent = seed;
+            document.getElementById('versionValue').textContent = version;
+
+            // 模拟生成出生点坐标和特殊地形信息
+            const spawnX = Math.floor(Math.random() * 1000) - 500;
+            const spawnZ = Math.floor(Math.random() * 1000) - 500;
+            document.getElementById('spawnCoords').textContent = `X: ${spawnX}, Z: ${spawnZ}`;
+
+            const terrains = ['平原', '森林', '山脉', '沙漠', '海洋'];
+            const randomTerrain = terrains[Math.floor(Math.random() * terrains.length)];
+            document.getElementById('specialTerrain').textContent = randomTerrain;
+        }
+    </script>
+</body>
+</html>
