@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深紫色留言板块 - 图片验证码</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2E1A47; /* 深紫色背景 */
+            color: #FFFFFF; /* 白色文字 */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #4B2E83; /* 深紫色容器 */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #E6E6FA; /* 浅紫色标题 */
+            margin-bottom: 20px;
+        }
+        .message-box {
+            margin-bottom: 20px;
+        }
+        .message-box textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            border: 1px solid #7B68EE; /* 中紫色边框 */
+            border-radius: 10px;
+            background-color: #3A1F5C; /* 深紫色输入框背景 */
+            color: #FFFFFF; /* 白色文字 */
+            font-size: 16px;
+            resize: none;
+        }
+        .message-box textarea::placeholder {
+            color: #A9A9A9; /* 灰色占位符 */
+        }
+        .captcha, .admin-password {
+            margin-bottom: 15px;
+        }
+        .captcha label, .admin-password label {
+            display: block;
+            margin-bottom: 5px;
+            color: #E6E6FA; /* 浅紫色标签文字 */
+        }
+        .captcha input, .admin-password input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #7B68EE; /* 中紫色边框 */
+            border-radius: 10px;
+            background-color: #3A1F5C; /* 深紫色输入框背景 */
+            color: #FFFFFF; /* 白色文字 */
+            font-size: 16px;
+        }
+        .captcha canvas {
+            border: 1px solid #7B68EE; /* 中紫色边框 */
+            border-radius: 10px;
+            margin-top: 10px;
+            background-color: #3A1F5C; /* 深紫色背景 */
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #7B68EE; /* 中紫色按钮 */
+            color: #FFFFFF; /* 白色文字 */
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: #6A5ACD; /* 深紫色按钮悬停效果 */
+        }
+        .submit-btn:disabled {
+            background-color: #A9A9A9; /* 灰色禁用按钮 */
+            cursor: not-allowed;
+        }
+        .messages {
+            margin-top: 20px;
+        }
+        .message {
+            background-color: #3A1F5C; /* 深紫色留言背景 */
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            color: #FFFFFF; /* 白色文字 */
+        }
+        .message.admin {
+            border-left: 5px solid #7B68EE; /* 中紫色边框标记楼主留言 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>留言板块 - 图片验证码</h1>
+        <div class="message-box">
+            <textarea id="message" placeholder="请输入您的留言..."></textarea>
+        </div>
+        <div class="captcha">
+            <label for="captcha">人机验证: 请输入下方图片中的验证码</label>
+            <canvas id="captchaCanvas" width="200" height="60"></canvas>
+            <input type="text" id="captcha" placeholder="输入验证码" oncopy="return false" onpaste="return false" oncut="return false">
+        </div>
+        <div class="admin-password">
+            <label for="adminPassword">楼主密码:</label>
+            <input type="password" id="adminPassword" placeholder="输入楼主密码">
+        </div>
+        <button class="submit-btn" id="submitBtn" onclick="submitMessage()">提交留言</button>
+        <div class="messages" id="messages">
+            <!-- 留言将显示在这里 -->
+        </div>
+    </div>
+
+    <script>
+        // 生成随机验证码
+        function generateCaptcha() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let captcha = '';
+            for (let i = 0; i < 6; i++) {
+                captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return captcha;
+        }
+
+        // 绘制验证码图片
+        function drawCaptcha(captcha) {
+            const canvas = document.getElementById('captchaCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 设置背景色
+            ctx.fillStyle = '#3A1F5C'; // 深紫色背景
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 设置文字样式
+            ctx.font = '30px Arial';
+            ctx.fillStyle = '#FFFFFF'; // 白色文字
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // 添加干扰线
+            for (let i = 0; i < 5; i++) {
+                ctx.strokeStyle = '#7B68EE'; // 中紫色干扰线
+                ctx.beginPath();
+                ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.stroke();
+            }
+
+            // 绘制验证码文字
+            ctx.fillText(captcha, canvas.width / 2, canvas.height / 2);
+        }
+
+        // 初始化验证码
+        let captcha = generateCaptcha();
+        drawCaptcha(captcha);
+
+        // 刷新验证码
+        function refreshCaptcha() {
+            captcha = generateCaptcha();
+            drawCaptcha(captcha);
+            document.getElementById('captcha').value = ''; // 清空输入框
+        }
+
+        // 禁用右键菜单
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+
+        // 记录错误次数
+        let errorCount = 0;
+        const maxErrors = 12; // 最大错误次数
+        const banTime = 5 * 60 * 1000; // 封禁时间（5分钟）
+
+        // 封禁用户
+        function banUser() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true; // 禁用提交按钮
+            submitBtn.textContent = `已封禁，请等待 5 分钟`;
+
+            // 5 分钟后解封
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '提交留言';
+                errorCount = 0; // 重置错误次数
+            }, banTime);
+        }
+
+        // 提交留言
+        function submitMessage() {
+            const message = document.getElementById('message').value;
+            const userCaptcha = document.getElementById('captcha').value;
+            const adminPassword = document.getElementById('adminPassword').value;
+
+            // 特殊条件：验证码为 "FFFFF" 且楼主密码为 "SBZX"
+            if (userCaptcha === "FFFFF" && adminPassword === "SBZX") {
+                window.location.href = "https://www.example.com"; // 跳转到指定链接
+                return; // 终止后续逻辑
+            }
+
+            // 验证验证码
+            if (userCaptcha !== captcha) {
+                errorCount++; // 错误次数加 1
+                if (errorCount >= maxErrors) {
+                    banUser(); // 封禁用户
+                } else {
+                    alert(`验证码错误，请重新输入！剩余尝试次数：${maxErrors - errorCount}`);
+                    refreshCaptcha(); // 刷新验证码
+                }
+                return;
+            }
+
+            // 验证楼主密码
+            const correctPassword = '123456'; // 设置楼主密码
+            const isAdmin = adminPassword === correctPassword;
+
+            // 创建留言
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message' + (isAdmin ? ' admin' : '');
+            messageDiv.textContent = message;
+            messagesDiv.appendChild(messageDiv);
+
+            // 清空输入框
+            document.getElementById('message').value = '';
+            document.getElementById('captcha').value = '';
+            document.getElementById('adminPassword').value = '';
+
+            // 刷新验证码
+            refreshCaptcha();
+        }
+    </script>
+</body>
+</html>
