@@ -5,7 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>诗坂中学初二3班聊天</title>
     <style>
-        /* 样式与之前相同 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2E1A47; /* 深紫色背景 */
+            color: #FFFFFF; /* 白色文字 */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #4B2E83; /* 深紫色容器 */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #E6E6FA; /* 浅紫色标题 */
+            margin-bottom: 20px;
+        }
+        .message-box {
+            margin-bottom: 20px;
+        }
+        .message-box textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            border: 1px solid #7B68EE; /* 中紫色边框 */
+            border-radius: 10px;
+            background-color: #3A1F5C; /* 深紫色输入框背景 */
+            color: #FFFFFF; /* 白色文字 */
+            font-size: 16px;
+            resize: none;
+        }
+        .message-box textarea::placeholder {
+            color: #A9A9A9; /* 灰色占位符 */
+        }
+        .admin-password {
+            margin-bottom: 15px;
+        }
+        .admin-password label {
+            display: block;
+            margin-bottom: 5px;
+            color: #E6E6FA; /* 浅紫色标签文字 */
+        }
+        .admin-password input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #7B68EE; /* 中紫色边框 */
+            border-radius: 10px;
+            background-color: #3A1F5C; /* 深紫色输入框背景 */
+            color: #FFFFFF; /* 白色文字 */
+            font-size: 16px;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #7B68EE; /* 中紫色按钮 */
+            color: #FFFFFF; /* 白色文字 */
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: #6A5ACD; /* 深紫色按钮悬停效果 */
+        }
+        .submit-btn:disabled {
+            background-color: #A9A9A9; /* 灰色禁用按钮 */
+            cursor: not-allowed;
+        }
+        .messages {
+            margin-top: 20px;
+        }
+        .message {
+            background-color: #3A1F5C; /* 深紫色留言背景 */
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            color: #FFFFFF; /* 白色文字 */
+        }
+        .message.admin {
+            border-left: 5px solid #7B68EE; /* 中紫色边框标记管理员留言 */
+        }
+        .message.muted {
+            opacity: 0.5; /* 禁言用户留言透明度降低 */
+        }
+        .action-buttons {
+            margin-top: 10px;
+        }
+        .action-buttons button {
+            margin-right: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .action-buttons button.mute-btn {
+            background-color: #FF4D4D; /* 红色禁言按钮 */
+            color: white;
+        }
+        .action-buttons button.unmute-btn {
+            background-color: #4CAF50; /* 绿色解除禁言按钮 */
+            color: white;
+        }
+        .action-buttons button.delete-btn {
+            background-color: #FFA500; /* 橙色删除按钮 */
+            color: white;
+        }
     </style>
 </head>
 <body>
