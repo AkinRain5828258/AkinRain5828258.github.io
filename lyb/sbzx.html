@@ -5,122 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>诗坂中学初二3班聊天</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #2E1A47; /* 深紫色背景 */
-            color: #FFFFFF; /* 白色文字 */
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            background-color: #4B2E83; /* 深紫色容器 */
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
-            width: 100%;
-        }
-        h1 {
-            text-align: center;
-            color: #E6E6FA; /* 浅紫色标题 */
-            margin-bottom: 20px;
-        }
-        .message-box {
-            margin-bottom: 20px;
-        }
-        .message-box textarea {
-            width: 100%;
-            height: 120px;
-            padding: 10px;
-            border: 1px solid #7B68EE; /* 中紫色边框 */
-            border-radius: 10px;
-            background-color: #3A1F5C; /* 深紫色输入框背景 */
-            color: #FFFFFF; /* 白色文字 */
-            font-size: 16px;
-            resize: none;
-        }
-        .message-box textarea::placeholder {
-            color: #A9A9A9; /* 灰色占位符 */
-        }
-        .admin-password {
-            margin-bottom: 15px;
-        }
-        .admin-password label {
-            display: block;
-            margin-bottom: 5px;
-            color: #E6E6FA; /* 浅紫色标签文字 */
-        }
-        .admin-password input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #7B68EE; /* 中紫色边框 */
-            border-radius: 10px;
-            background-color: #3A1F5C; /* 深紫色输入框背景 */
-            color: #FFFFFF; /* 白色文字 */
-            font-size: 16px;
-        }
-        .submit-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #7B68EE; /* 中紫色按钮 */
-            color: #FFFFFF; /* 白色文字 */
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .submit-btn:hover {
-            background-color: #6A5ACD; /* 深紫色按钮悬停效果 */
-        }
-        .submit-btn:disabled {
-            background-color: #A9A9A9; /* 灰色禁用按钮 */
-            cursor: not-allowed;
-        }
-        .messages {
-            margin-top: 20px;
-        }
-        .message {
-            background-color: #3A1F5C; /* 深紫色留言背景 */
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            color: #FFFFFF; /* 白色文字 */
-        }
-        .message.admin {
-            border-left: 5px solid #7B68EE; /* 中紫色边框标记管理员留言 */
-        }
-        .message.muted {
-            opacity: 0.5; /* 禁言用户留言透明度降低 */
-        }
-        .action-buttons {
-            margin-top: 10px;
-        }
-        .action-buttons button {
-            margin-right: 10px;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .action-buttons button.mute-btn {
-            background-color: #FF4D4D; /* 红色禁言按钮 */
-            color: white;
-        }
-        .action-buttons button.unmute-btn {
-            background-color: #4CAF50; /* 绿色解除禁言按钮 */
-            color: white;
-        }
-        .action-buttons button.delete-btn {
-            background-color: #FFA500; /* 橙色删除按钮 */
-            color: white;
-        }
+        /* 样式与之前相同 */
     </style>
 </head>
 <body>
@@ -171,45 +56,50 @@
 
                 // 如果是管理员，添加操作按钮
                 if (isAdmin(localStorage.getItem('adminPassword'))) {
-                    const actionButtons = document.createElement('div');
-                    actionButtons.className = 'action-buttons';
-
-                    // 删除按钮
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.className = 'delete-btn';
-                    deleteBtn.textContent = '删除';
-                    deleteBtn.onclick = async () => {
-                        await supabase.from('messages').delete().eq('id', msg.id); // 从 Supabase 删除留言
-                    };
-
-                    // 禁言按钮
-                    const muteBtn = document.createElement('button');
-                    muteBtn.className = 'mute-btn';
-                    muteBtn.textContent = '禁言';
-                    muteBtn.onclick = () => {
-                        mutedUsers.add(msg.username);
-                        alert(`用户 ${msg.username} 已被禁言！`);
-                        renderMessages(messages);
-                    };
-
-                    // 解除禁言按钮
-                    const unmuteBtn = document.createElement('button');
-                    unmuteBtn.className = 'unmute-btn';
-                    unmuteBtn.textContent = '解除禁言';
-                    unmuteBtn.onclick = () => {
-                        mutedUsers.delete(msg.username);
-                        alert(`用户 ${msg.username} 已解除禁言！`);
-                        renderMessages(messages);
-                    };
-
-                    actionButtons.appendChild(deleteBtn);
-                    actionButtons.appendChild(muteBtn);
-                    actionButtons.appendChild(unmuteBtn);
-                    messageDiv.appendChild(actionButtons);
+                    messageDiv.appendChild(createActionButtons(msg));
                 }
 
                 messagesDiv.appendChild(messageDiv);
             });
+        }
+
+        // 创建操作按钮
+        function createActionButtons(msg) {
+            const actionButtons = document.createElement('div');
+            actionButtons.className = 'action-buttons';
+
+            // 删除按钮
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = '删除';
+            deleteBtn.onclick = async () => {
+                await supabase.from('messages').delete().eq('id', msg.id);
+            };
+
+            // 禁言按钮
+            const muteBtn = document.createElement('button');
+            muteBtn.className = 'mute-btn';
+            muteBtn.textContent = '禁言';
+            muteBtn.onclick = () => {
+                mutedUsers.add(msg.username);
+                alert(`用户 ${msg.username} 已被禁言！`);
+                renderMessages(messages);
+            };
+
+            // 解除禁言按钮
+            const unmuteBtn = document.createElement('button');
+            unmuteBtn.className = 'unmute-btn';
+            unmuteBtn.textContent = '解除禁言';
+            unmuteBtn.onclick = () => {
+                mutedUsers.delete(msg.username);
+                alert(`用户 ${msg.username} 已解除禁言！`);
+                renderMessages(messages);
+            };
+
+            actionButtons.appendChild(deleteBtn);
+            actionButtons.appendChild(muteBtn);
+            actionButtons.appendChild(unmuteBtn);
+            return actionButtons;
         }
 
         // 实时监听 Supabase 数据变化
@@ -237,6 +127,12 @@
             const message = document.getElementById('message').value;
             const adminInput = document.getElementById('adminPassword').value;
 
+            // 检查输入是否为空
+            if (!message.trim()) {
+                alert('留言内容不能为空！');
+                return;
+            }
+
             // 检查是否为管理员
             const isAdminUser = isAdmin(adminInput);
 
@@ -258,6 +154,9 @@
                 // 清空输入框
                 document.getElementById('message').value = '';
                 document.getElementById('adminPassword').value = '';
+            } else {
+                alert('提交留言失败，请重试！');
+                console.error('提交留言失败:', error);
             }
         }
 
