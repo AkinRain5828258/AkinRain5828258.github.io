@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>诗坂中学初二3班聊天</title>
+    <style>
+        /* 样式与之前相同 */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>诗坂中学初二5班聊天</h1>
+        <div class="message-box">
+            <textarea id="message" placeholder="请输入您的留言..."></textarea>
+        </div>
+        <div class="admin-password">
+            <label for="adminPassword">管理员密码:</label>
+            <input type="password" id="adminPassword" placeholder="输入管理员密码">
+        </div>
+        <button class="submit-btn" id="submitBtn" onclick="submitMessage()">提交留言</button>
+        <div class="messages" id="messages">
+            <!-- 留言将显示在这里 -->
+        </div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // Supabase 配置
+        const supabaseUrl = 'https://huezixczyrapcrfnrwna.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1ZXppeGN6eXJhcGNyZm5yd25hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEzNDU4MzQsImV4cCI6MjA1NjkyMTgzNH0.howNhcF9N9WAFbRaUSxSe3yK7vs8FGbONaOrAy5qL0o';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // 管理员密码
+        const adminPassword = '350213201102121510';
+
+        // 禁言用户列表
+        const mutedUsers = new Set();
+
+        // 检查是否为管理员
+        function isAdmin(password) {
+            return password === adminPassword;
+        }
+
+        // 渲染留言
+        function renderMessages(messages) {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = ''; // 清空当前留言
+
+            messages.forEach((msg) => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.is_admin ? 'admin' : ''} ${mutedUsers.has(msg.username) ? 'muted' : ''}`;
+                messageDiv.textContent = `${msg.username}: ${msg.text}`;
+
+                // 如果是管理员，添加操作按钮
+                if (isAdmin(localStorage.getItem('adminPassword'))) {
+                    messageDiv.appendChild(createActionButtons(msg));
+                }
+
+                messagesDiv.appendChild(messageDiv);
+            });
+        }
+
+        // 创建操作按钮
+        function createActionButtons(msg) {
+            const actionButtons = document.createElement('div');
+            actionButtons.className = 'action-buttons';
+
+            // 删除按钮
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = '删除';
+            deleteBtn.onclick = async () => {
+                await supabase.from('messages').delete().eq('id', msg.id);
+            };
+
+            // 禁言按钮
+            const muteBtn = document.createElement('button');
+            muteBtn.className = 'mute-btn';
+            muteBtn.textContent = '禁言';
+            muteBtn.onclick = () => {
+                mutedUsers.add(msg.username);
+                alert(`用户 ${msg.username} 已被禁言！`);
+                renderMessages(messages);
+            };
+
+            // 解除禁言按钮
+            const unmuteBtn = document.createElement('button');
+            unmuteBtn.className = 'unmute-btn';
+            unmuteBtn.textContent = '解除禁言';
+            unmuteBtn.onclick = () => {
+                mutedUsers.delete(msg.username);
+                alert(`用户 ${msg.username} 已解除禁言！`);
+                renderMessages(messages);
+            };
+
+            actionButtons.appendChild(deleteBtn);
+            actionButtons.appendChild(muteBtn);
+            actionButtons.appendChild(unmuteBtn);
+            return actionButtons;
+        }
+
+        // 实时监听 Supabase 数据变化
+        supabase
+            .from('messages')
+            .on('*', (payload) => {
+                fetchMessages(); // 数据变化时重新获取留言
+            })
+            .subscribe();
+
+        // 获取留言
+        async function fetchMessages() {
+            const { data: messages, error } = await supabase
+                .from('messages')
+                .select('*')
+                .order('created_at', { ascending: true });
+
+            if (!error) {
+                renderMessages(messages);
+            }
+        }
+
+        // 提交留言
+        async function submitMessage() {
+            const message = document.getElementById('message').value;
+            const adminInput = document.getElementById('adminPassword').value;
+
+            // 检查输入是否为空
+            if (!message.trim()) {
+                alert('留言内容不能为空！');
+                return;
+            }
+
+            // 检查是否为管理员
+            const isAdminUser = isAdmin(adminInput);
+
+            // 获取用户名（简单模拟）
+            const username = isAdminUser ? '管理员' : '用户';
+
+            // 检查用户是否被禁言
+            if (mutedUsers.has(username)) {
+                alert('您已被禁言，无法提交留言！');
+                return;
+            }
+
+            // 添加留言到 Supabase
+            const { error } = await supabase
+                .from('messages')
+                .insert([{ text: message, username: username, is_admin: isAdminUser }]);
+
+            if (!error) {
+                // 清空输入框
+                document.getElementById('message').value = '';
+                document.getElementById('adminPassword').value = '';
+            } else {
+                alert('提交留言失败，请重试！');
+                console.error('提交留言失败:', error);
+            }
+        }
+
+        // 初始化加载留言
+        fetchMessages();
+    </script>
+</body>
+</html>
