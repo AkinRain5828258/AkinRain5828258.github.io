@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ 超级时空穿越机 ⚡</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000428, #004e92);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .machine {
+            background: rgba(0, 0, 0, 0.7);
+            border: 5px solid #00FFFF;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
+            to { box-shadow: 0 0 40px rgba(0, 255, 255, 0.9); }
+        }
+        
+        h1 {
+            color: #00FFFF;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            margin-top: 0;
+        }
+        
+        .input-group {
+            margin: 20px 0;
+        }
+        
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        
+        input {
+            width: 100px;
+            text-align: center;
+        }
+        
+        button {
+            background: linear-gradient(to bottom, #00FFFF, #0088FF);
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            background: linear-gradient(to bottom, #00FFCC, #0066FF);
+            transform: scale(1.05);
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        .progress-container {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 30px;
+            background: linear-gradient(to right, #00FF00, #00FF88);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.1s linear;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: bold;
+        }
+        
+        .countdown {
+            font-size: 24px;
+            margin: 10px 0;
+            display: none;
+        }
+        
+        .result {
+            font-size: 20px;
+            margin-top: 20px;
+            display: none;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .disclaimer {
+            margin-top: 50px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="machine">
+        <h1>⚡ 超级时空穿越机 ⚡</h1>
+        <p>输入你想穿越的时间，本机器将带你前往未来！</p>
+        
+        <div class="input-group">
+            <input type="number" id="timeValue" min="1" value="10">
+            <select id="timeUnit">
+                <option value="seconds">秒</option>
+                <option value="minutes">分钟</option>
+                <option value="hours">小时</option>
+                <option value="days">天</option>
+                <option value="months">月</option>
+                <option value="years">年</option>
+            </select>
+            <button id="startBtn">开始穿越！</button>
+        </div>
+        
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+        
+        <div class="countdown" id="countdown">
+            剩余时间: <span id="timeLeft">0</span> 秒
+        </div>
+        
+        <div class="result" id="result">
+            ⚡ 穿越完成！欢迎来到未来！ ⚡
+        </div>
+    </div>
+    
+    <div class="disclaimer">
+        免责声明：本时空穿越机仅供娱乐，实际穿越功能尚未被科学证实。<br>
+        穿越过程中请勿乱动，以免引发时空悖论（开玩笑的）。
+    </div>
+    
+    <script>
+        const startBtn = document.getElementById('startBtn');
+        const timeValue = document.getElementById('timeValue');
+        const timeUnit = document.getElementById('timeUnit');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const countdown = document.getElementById('countdown');
+        const timeLeft = document.getElementById('timeLeft');
+        const result = document.getElementById('result');
+        
+        startBtn.addEventListener('click', () => {
+            const value = parseInt(timeValue.value);
+            const unit = timeUnit.value;
+            
+            if (isNaN(value) || value <= 0) {
+                alert('请输入有效的时间！');
+                return;
+            }
+            
+            // 转换为秒
+            let totalSeconds;
+            switch (unit) {
+                case 'seconds': totalSeconds = value; break;
+                case 'minutes': totalSeconds = value * 60; break;
+                case 'hours': totalSeconds = value * 3600; break;
+                case 'days': totalSeconds = value * 86400; break;
+                case 'months': totalSeconds = value * 2592000; break; // 按30天算
+                case 'years': totalSeconds = value * 31536000; break; // 按365天算
+                default: totalSeconds = value;
+            }
+            
+            // 显示进度条和倒计时
+            progressContainer.style.display = 'block';
+            countdown.style.display = 'block';
+            result.style.display = 'none';
+            startBtn.disabled = true;
+            
+            let secondsLeft = totalSeconds;
+            timeLeft.textContent = secondsLeft;
+            
+            // 更新进度条和倒计时
+            const interval = setInterval(() => {
+                secondsLeft--;
+                timeLeft.textContent = secondsLeft;
+                
+                const progress = 100 - (secondsLeft / totalSeconds * 100);
+                progressBar.style.width = `${progress}%`;
+                progressBar.textContent = `${Math.round(progress)}%`;
+                
+                if (secondsLeft <= 0) {
+                    clearInterval(interval);
+                    progressBar.style.width = '100%';
+                    progressBar.textContent = '100%';
+                    timeLeft.textContent = '0';
+                    
+                    // 显示穿越完成信息
+                    setTimeout(() => {
+                        result.style.display = 'block';
+                        startBtn.disabled = false;
+                        
+                        // 随机穿越结果
+                        const results = [
+                            "⚡ 穿越完成！欢迎来到未来！ ⚡",
+                            "🌌 时空跳跃成功！你现在是未来人了！ 🌌",
+                            "🕰️ 恭喜！你刚刚打破了时间连续性！ 🕰️",
+                            "🚀 穿越成功！记得告诉过去的你少吃点！ 🚀",
+                            "👽 欢迎来到未来！这里的空气都是 WiFi！ 👽"
+                        ];
+                        result.textContent = results[Math.floor(Math.random() * results.length)];
+                    }, 500);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
