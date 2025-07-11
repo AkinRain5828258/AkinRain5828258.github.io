@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚠️ 警告！你已被选中！ ⚠️</title>
+    <style>
+        /* 基础样式 */
+        body {
+            background-color: #FFD700;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            animation: bgFlash 3s infinite;
+        }
+        
+        @keyframes bgFlash {
+            0% { background-color: #FFD700; }
+            25% { background-color: #FF6347; }
+            50% { background-color: #7FFFD4; }
+            75% { background-color: #FF69B4; }
+            100% { background-color: #FFD700; }
+        }
+        
+        .header {
+            color: #FF0000;
+            text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+            font-size: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .ad-box {
+            background: rgba(255, 255, 255, 0.8);
+            border: 5px dashed #FF0000;
+            border-radius: 15px;
+            margin: 20px auto;
+            padding: 15px;
+            max-width: 600px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            animation: shake 0.5s infinite alternate;
+        }
+        
+        @keyframes shake {
+            0% { transform: rotate(-1deg); }
+            100% { transform: rotate(1deg); }
+        }
+        
+        .ad-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FF4500;
+            margin-bottom: 10px;
+        }
+        
+        .ad-content {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        
+        .fake-button {
+            background: linear-gradient(to bottom, #FF0000, #990000);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            box-shadow: 0 5px 0 #660000;
+        }
+        
+        .fake-button:hover {
+            background: linear-gradient(to bottom, #FF4500, #CC0000);
+        }
+        
+        .fake-button:active {
+            transform: translateY(5px);
+            box-shadow: none;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">⚠️ 警告！你已被选中！ ⚠️</div>
+    
+    <!-- 广告1 -->
+    <div class="ad-box" style="font-family: 'Comic Sans MS', cursive;">
+        <div class="ad-title">🔥 独家揭秘！你的朋友暗恋你！ 🔥</div>
+        <div class="ad-content">科学研究表明，和你做朋友的人幸福指数提升 300%！</div>
+        <button class="fake-button" onclick="alert('哈哈！骗你的！但你的朋友真的很喜欢你！')">点击领取友谊证书</button>
+    </div>
+    
+    <!-- 广告2 -->
+    <div class="ad-box" style="font-family: 'Impact', sans-serif;">
+        <div class="ad-title">💰 你的笑容价值 100 万！ 💰</div>
+        <div class="ad-content">银行无法存储，但朋友会永远珍藏！</div>
+        <button class="fake-button" onclick="alert('恭喜！你刚刚让世界变得更美好！')">立即兑换快乐</button>
+    </div>
+    
+    <!-- 广告3 -->
+    <div class="ad-box" style="font-family: 'Courier New', monospace;">
+        <div class="ad-title">🚨 紧急通知！你太优秀了！ 🚨</div>
+        <div class="ad-content">系统检测到你的魅力值爆表，请控制一下！</div>
+        <button class="fake-button" onclick="alert('别点了！再点就优秀到外太空了！')">点击领取天才奖</button>
+    </div>
+    
+    <!-- 广告4 -->
+    <div class="ad-box" style="font-family: 'Papyrus', fantasy;">
+        <div class="ad-title">🎁 限时福利！你的存在就是礼物！ 🎁</div>
+        <div class="ad-content">无需购买，你天生就是 VIP！</div>
+        <button class="fake-button" onclick="alert('VIP 特权已激活：朋友永远爱你！')">领取 VIP 特权</button>
+    </div>
+    
+    <!-- 广告5 -->
+    <div class="ad-box" style="font-family: 'Times New Roman', serif;">
+        <div class="ad-title">💎 隐藏属性曝光！你是钻石级朋友！ 💎</div>
+        <div class="ad-content">纯度 99.9%，比真的钻石还稀有！</div>
+        <button class="fake-button" onclick="alert('钻石恒久远，友谊永流传！')">点击鉴定</button>
+    </div>
+    
+    <!-- 更多广告可以继续添加 -->
+    
+    <div class="footer">
+        <p>免责声明：本网站纯属娱乐，不含真实广告或商业内容 | 设计灵感来自夸张的互联网广告风格</p>
+        <p>© 2023 朋友整蛊有限公司（假的）</p>
+    </div>
+    
+    <script>
+        // 随机颜色闪烁
+        const colors = ['#FFD700', '#FF6347', '#7FFFD4', '#FF69B4', '#9370DB', '#3CB371'];
+        let currentColor = 0;
+        
+        setInterval(() => {
+            document.body.style.backgroundColor = colors[currentColor];
+            currentColor = (currentColor + 1) % colors.length;
+        }, 2000);
+        
+        // 按钮点击效果
+        const buttons = document.querySelectorAll('.fake-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                button.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    button.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>
