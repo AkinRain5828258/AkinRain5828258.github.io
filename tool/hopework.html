@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>工作条件选择器 | 语言限定单选/多选</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f0f4fa 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Roboto', 'Noto Sans CJK SC', 'Noto Sans CJK TC', 'Microsoft YaHei', sans-serif;
+            padding: 20px;
+        }
+
+        /* 主卡片 */
+        .card {
+            max-width: 650px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 48px;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 2rem 1.8rem 2.4rem;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            text-align: center;
+            color: #1e293b;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .sub {
+            text-align: center;
+            color: #5b6e8c;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 1.2rem;
+            margin-bottom: 1.6rem;
+        }
+
+        /* 三个工作选项区域 */
+        .options-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-bottom: 2.8rem;
+        }
+
+        .option-card {
+            background: #ffffff;
+            flex: 1;
+            min-width: 140px;
+            border-radius: 32px;
+            padding: 1.2rem 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid #e2edf7;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .option-card:hover {
+            transform: translateY(-4px);
+            border-color: #b9d0f0;
+            background: #fefefe;
+            box-shadow: 0 14px 22px -10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 选中样式 */
+        .option-card.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            box-shadow: 0 8px 20px -8px rgba(59,130,246,0.3);
+        }
+
+        .option-emoji {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+
+        .option-text {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #0f172a;
+            letter-spacing: 0.5px;
+        }
+
+        /* 语言栏 */
+        .lang-bar {
+            background: #f1f5f9;
+            border-radius: 60px;
+            display: flex;
+            justify-content: space-between;
+            padding: 6px;
+            margin: 24px 0 20px;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            flex: 1;
+            text-align: center;
+            padding: 12px 0;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            background: transparent;
+            color: #334155;
+            border: none;
+            font-family: inherit;
+        }
+
+        .lang-btn.active {
+            background: #ffffff;
+            color: #2563eb;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #d9e6ff;
+        }
+
+        .lang-btn:not(.active):hover {
+            background: #e6edf6;
+            color: #1e40af;
+        }
+
+        /* 简洁状态区域 - 只显示当前选中的选项，无规则说明 */
+        .info-message {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 14px 18px;
+            margin-top: 24px;
+            font-size: 0.9rem;
+            color: #1e293b;
+            border-left: 5px solid #3b82f6;
+            transition: 0.1s;
+            text-align: center;
+        }
+
+        .selected-badge {
+            font-size: 0.85rem;
+            background: #eef2ff;
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 40px;
+            color: #1e40af;
+            font-weight: 500;
+        }
+
+        footer {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 28px;
+            color: #7e8b9f;
+        }
+
+        @media (max-width: 500px) {
+            .card {
+                padding: 1.5rem;
+            }
+            .option-text {
+                font-size: 1.1rem;
+            }
+            .option-card {
+                min-width: 100px;
+                padding: 0.9rem 0.4rem;
+            }
+            .lang-btn {
+                font-size: 0.9rem;
+                padding: 10px 0;
+            }
+        }
+
+        button {
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<div class="card" id="app">
+    <h1>
+        <span id="mainTitle">✨ 理想工作要素</span>
+    </h1>
+    <div class="sub" id="subTitle">选择你关注的条件</div>
+
+    <!-- 三个选项区域 -->
+    <div class="options-group" id="optionsContainer">
+        <!-- 选项1: 薪资 -->
+        <div class="option-card" data-value="salary">
+            <div class="option-emoji">💰</div>
+            <div class="option-text" id="optSalary">5k+ 工资</div>
+        </div>
+        <!-- 选项2: 8小时 -->
+        <div class="option-card" data-value="hours">
+            <div class="option-emoji">⏱️</div>
+            <div class="option-text" id="optHours">8小时工作制</div>
+        </div>
+        <!-- 选项3: 双休 -->
+        <div class="option-card" data-value="weekend">
+            <div class="option-emoji">🌿</div>
+            <div class="option-text" id="optWeekend">双休</div>
+        </div>
+    </div>
+
+    <!-- 语言切换栏 -->
+    <div class="lang-bar">
+        <button class="lang-btn" data-lang="sc">🇨🇳 简体中文</button>
+        <button class="lang-btn" data-lang="tc">🇭🇰 繁體中文</button>
+        <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+    </div>
+
+    <!-- 仅显示已选内容，无额外规则提示 -->
+    <div class="info-message" id="infoMsg">
+        <span class="selected-badge" id="selectedDisplay">📌 未选择任何选项</span>
+    </div>
+    <footer>⚡ 点击选项卡片切换 | 简体中文下互斥单选 | 繁体/英文可多选</footer>
+</div>
+
+<script>
+    // ---------- 多语言字典 ----------
+    const locales = {
+        sc: {   // 简体中文
+            mainTitle: "✨ 理想工作要素",
+            subTitle: "选择你关注的条件",
+            salary: "5k+ 工资",
+            hours: "8小时工作制",
+            weekend: "双休",
+            emptyMessage: "📌 未选择任何选项",
+            selectedSingle: (name) => `✅ 已选择: ${name}`,
+            selectedMultiple: (list) => `📌 已选中的选项: ${list.join('、')}`,
+        },
+        tc: {   // 繁體中文
+            mainTitle: "✨ 理想工作要素",
+            subTitle: "選擇你關注的條件",
+            salary: "5k+ 工資",
+            hours: "8小時工作制",
+            weekend: "雙休",
+            emptyMessage: "📌 未選擇任何選項",
+            selectedSingle: (name) => `✅ 已選擇: ${name}`,
+            selectedMultiple: (list) => `📌 已選中的選項: ${list.join('、')}`,
+        },
+        en: {   // English
+            mainTitle: "✨ Ideal Work Conditions",
+            subTitle: "Select your preferences",
+            salary: "5k+ Salary",
+            hours: "8-hour workday",
+            weekend: "Two-day weekend",
+            emptyMessage: "📌 No option selected",
+            selectedSingle: (name) => `✅ Selected: ${name}`,
+            selectedMultiple: (list) => `📌 Selected options: ${list.join(', ')}`,
+        }
+    };
+
+    // 当前语言: 'sc'(简体), 'tc'(繁体), 'en'
+    let currentLang = 'sc';    // 默认简体，满足单选规则
+
+    // 存储选中的value数组 (例如 ['salary', 'hours'])
+    let selectedValues = [];
+
+    // 三个选项的映射: value -> 对应dom元素和显示文字key
+    const optionItems = [
+        { value: 'salary', domId: 'optSalary', textKey: 'salary' },
+        { value: 'hours',  domId: 'optHours',  textKey: 'hours' },
+        { value: 'weekend',domId: 'optWeekend',textKey: 'weekend' }
+    ];
+
+    // DOM 元素
+    const mainTitleEl = document.getElementById('mainTitle');
+    const subTitleEl = document.getElementById('subTitle');
+    const selectedDisplaySpan = document.getElementById('selectedDisplay');
+    const optionsContainer = document.getElementById('optionsContainer');
+    const langBtns = document.querySelectorAll('.lang-btn');
+
+    // 辅助: 更新所有UI文字 (根据currentLang刷新页面显示)
+    function updateUIText() {
+        const langData = locales[currentLang];
+        if (!langData) return;
+        mainTitleEl.innerText = langData.mainTitle;
+        subTitleEl.innerText = langData.subTitle;
+        // 更新三个选项文字
+        optionItems.forEach(item => {
+            const domEl = document.getElementById(item.domId);
+            if (domEl) {
+                domEl.innerText = langData[item.textKey];
+            }
+        });
+        // 刷新选择状态显示 (因为选项文字变了，重新生成已选内容)
+        updateSelectionDisplay();
+    }
+
+    // 高亮卡片 (根据selectedValues数组同步视觉样式)
+    function highlightSelectedCards() {
+        const cards = document.querySelectorAll('.option-card');
+        cards.forEach(card => {
+            const val = card.getAttribute('data-value');
+            if (selectedValues.includes(val)) {
+                card.classList.add('selected');
+            } else {
+                card.classList.remove('selected');
+            }
+        });
+    }
+
+    // 获取当前语言下某个选项对应的显示文本
+    function getOptionDisplayText(value) {
+        if (currentLang === 'sc') {
+            if (value === 'salary') return '5k+ 工资';
+            if (value === 'hours') return '8小时工作制';
+            if (value === 'weekend') return '双休';
+        } else if (currentLang === 'tc') {
+            if (value === 'salary') return '5k+ 工資';
+            if (value === 'hours') return '8小時工作制';
+            if (value === 'weekend') return '雙休';
+        } else {
+            if (value === 'salary') return '5k+ Salary';
+            if (value === 'hours') return '8-hour workday';
+            if (value === 'weekend') return 'Two-day weekend';
+        }
+        return value;
+    }
+
+    // 更新底部只显示已选内容 (无规则说明)
+    function updateSelectionDisplay() {
+        const langData = locales[currentLang];
+        if (!langData) return;
+
+        const selectedTexts = [];
+        for (let item of optionItems) {
+            if (selectedValues.includes(item.value)) {
+                const displayText = getOptionDisplayText(item.value);
+                selectedTexts.push(displayText);
+            }
+        }
+
+        if (selectedTexts.length === 0) {
+            selectedDisplaySpan.innerText = langData.emptyMessage;
+        } else {
+            if (selectedTexts.length === 1) {
+                selectedDisplaySpan.innerText = langData.selectedSingle(selectedTexts[0]);
+            } else {
+                selectedDisplaySpan.innerText = langData.selectedMultiple(selectedTexts);
+            }
+        }
+    }
+
+    // 核心选择逻辑: 根据当前语言处理选中/取消
+    function toggleOption(value) {
+        const isAlreadySelected = selectedValues.includes(value);
+
+        if (currentLang === 'sc') {
+            // 简体中文: 只能勾选一个选项，选其他自动撤回已选选项
+            if (isAlreadySelected) {
+                // 取消选择该项
+                selectedValues = [];
+            } else {
+                // 选择新的，替换掉原有的（只能有一个）
+                selectedValues = [value];
+            }
+        } else {
+            // 繁体中文 或 English: 不做限制 => 标准的toggle (可多选)
+            if (isAlreadySelected) {
+                // 如果已选中则移除
+                selectedValues = selectedValues.filter(v => v !== value);
+            } else {
+                // 未选中则添加
+                selectedValues.push(value);
+            }
+        }
+
+        // 更新界面高亮
+        highlightSelectedCards();
+        // 更新显示选中内容
+        updateSelectionDisplay();
+    }
+
+    // 重置语言时，根据新语言规则修正selectedValues (当从繁体切换到简体时，如果当前有多个选中项，应当自动只保留一个)
+    function enforceRulesByLanguage() {
+        if (currentLang === 'sc') {
+            // 简体中文模式: 如果目前选中多于1个，只保留第一个选中项（符合单选撤回原则）
+            if (selectedValues.length > 1) {
+                const keepFirst = selectedValues[0];
+                selectedValues = [keepFirst];
+                highlightSelectedCards();
+                updateSelectionDisplay();
+            }
+        }
+        // 繁体/英文无须额外限制，多选合规
+        // 但为了UI与内部状态统一，重绘高亮即可
+        highlightSelectedCards();
+        updateSelectionDisplay();
+    }
+
+    // 切换语言主函数
+    function setLanguage(lang) {
+        if (lang === currentLang) return;
+        currentLang = lang;
+        // 1. 更新UI按钮高亮样式
+        langBtns.forEach(btn => {
+            const btnLang = btn.getAttribute('data-lang');
+            if (btnLang === lang) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        // 2. 刷新所有界面文字 (选项名称、标题等)
+        updateUIText();
+        // 3. 根据新语言的规则修正选中集合 (简体强制单选，繁体/英文保留多选但不会自动清空)
+        enforceRulesByLanguage();
+        // 4. 确保卡片高亮信息
+        highlightSelectedCards();
+        // 5. 再次更新消息区已选显示
+        updateSelectionDisplay();
+    }
+
+    // 绑定选项卡片点击事件 (使用事件委托)
+    function bindEvents() {
+        optionsContainer.addEventListener('click', (e) => {
+            let targetCard = e.target.closest('.option-card');
+            if (!targetCard) return;
+            const value = targetCard.getAttribute('data-value');
+            if (value) {
+                toggleOption(value);
+            }
+        });
+    }
+
+    // 初始化: 默认没有勾选，简体中文模式下空集。
+    function init() {
+        setLanguage('sc');   // 触发所有UI修正，强制确保单选规则
+        bindEvents();
+        if (selectedValues.length === 0) {
+            highlightSelectedCards();
+            updateSelectionDisplay();
+        }
+    }
+
+    // 监听语言按钮
+    function initLangButtons() {
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const lang = btn.getAttribute('data-lang');
+                if (lang === 'sc') setLanguage('sc');
+                else if (lang === 'tc') setLanguage('tc');
+                else if (lang === 'en') setLanguage('en');
+            });
+        });
+    }
+
+    // 启动
+    function start() {
+        initLangButtons();
+        init();
+    }
+
+    start();
+</script>
+</body>
+</html>
