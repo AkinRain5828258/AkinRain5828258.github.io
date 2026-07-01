@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>福建省厦门市初中学业成绩查询</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: '宋体', 'SimSun', 'Times New Roman', serif;
+      background: #e6e0d8;  /* 灰扑扑的背景 */
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .card {
+      max-width: 760px;
+      width: 100%;
+      background: #f5f0ea;
+      border: 2px solid #8f7b6a;
+      padding: 30px 28px 40px;
+      box-shadow: none;
+      border-radius: 0;  /* 方角，死板 */
+    }
+    /* 标题 — 宋体，无任何花哨 */
+    .main-title {
+      font-family: '宋体', 'SimSun', 'Times New Roman', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      text-align: center;
+      color: #1f1a15;
+      letter-spacing: 6px;
+      padding-bottom: 18px;
+      margin-bottom: 28px;
+      border-bottom: 3px solid #8f7b6a;
+      word-break: break-word;
+      text-shadow: none;
+    }
+    /* 查询区域 — 死板，无圆角，无阴影 */
+    .query-section {
+      background: #ede7df;
+      padding: 24px 20px 28px;
+      border: 1px solid #a39281;
+      margin-bottom: 30px;
+      border-radius: 0;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+    .field {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 16px;
+    }
+    .field label {
+      font-family: '宋体', 'SimSun', serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: #1f1a15;
+      min-width: 100px;
+      letter-spacing: 4px;
+    }
+    .field input {
+      flex: 1;
+      min-width: 180px;
+      padding: 12px 16px;
+      border: 2px solid #7f6b5a;
+      border-radius: 0;          /* 方方正正 */
+      font-family: '宋体', 'SimSun', serif;
+      font-size: 1.1rem;
+      background: #fcf9f5;
+      color: #1f1a15;
+      outline: none;
+      letter-spacing: 1px;
+      box-shadow: none;
+    }
+    .field input:focus {
+      border-color: #3d2e23;
+      background: #ffffff;
+      box-shadow: none;
+    }
+    .field input::placeholder {
+      color: #8a7a6a;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+    }
+    .query-btn-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 4px;
+    }
+    .query-btn {
+      font-family: '宋体', 'SimSun', serif;
+      background: #7f6b5a;
+      border: 2px solid #4f3f32;
+      padding: 14px 56px;
+      font-size: 1.7rem;
+      font-weight: 500;
+      color: #f5f0ea;
+      letter-spacing: 14px;
+      cursor: pointer;
+      transition: none;
+      text-shadow: none;
+      width: 100%;
+      max-width: 280px;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    .query-btn:active {
+      background: #5f4f3e;
+      border-color: #2f241c;
+    }
+    .query-btn:hover {
+      background: #8f7b6a;   /* 仅颜色变化，无动画 */
+    }
+    /* 结果区域 — 死板，无圆角，无阴影 */
+    .result-section {
+      margin-top: 16px;
+      background: #ede7df;
+      border: 1px solid #a39281;
+      padding: 18px 14px 20px;
+      border-radius: 0;
+      min-height: 150px;
+    }
+    .result-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 12px 24px;
+      background: #dcd2c6;
+      padding: 12px 18px;
+      border: 1px solid #8f7b6a;
+      margin-bottom: 20px;
+      font-family: '宋体', 'SimSun', serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #1f1a15;
+      border-radius: 0;
+    }
+    .result-header .label {
+      font-weight: 600;
+      color: #2d241c;
+      letter-spacing: 2px;
+      background: transparent;
+      padding: 0;
+      border: none;
+    }
+    .result-header .value {
+      background: #f5f0ea;
+      padding: 4px 20px;
+      border: 1px solid #7f6b5a;
+      font-weight: 500;
+      min-width: 80px;
+      display: inline-block;
+      text-align: center;
+    }
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 12px 10px;
+      background: #e2d9ce;
+      padding: 18px 14px;
+      border: 1px solid #8f7b6a;
+      margin-top: 6px;
+      border-radius: 0;
+    }
+    .score-item {
+      background: #f5f0ea;
+      border: 1px solid #7f6b5a;
+      padding: 8px 8px 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: '宋体', 'SimSun', serif;
+      font-size: 1.05rem;
+      border-radius: 0;
+    }
+    .score-item .subject {
+      font-weight: 500;
+      color: #1f1a15;
+      letter-spacing: 2px;
+    }
+    .score-item .value {
+      font-weight: 600;
+      background: #dcd2c6;
+      padding: 2px 14px 2px 16px;
+      border: 1px solid #6f5b4a;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+    }
+    .empty-result {
+      text-align: center;
+      font-family: '宋体', 'SimSun', serif;
+      font-size: 1.2rem;
+      color: #3d3229;
+      padding: 28px 10px;
+      letter-spacing: 4px;
+      background: #e2d9ce;
+      border: 1px solid #8f7b6a;
+      margin-top: 4px;
+    }
+    /* 隐藏辅助 */
+    .hidden {
+      display: none !important;
+    }
+    /* 死板风格：所有圆角归零，无阴影，无渐变 */
+    @media (max-width: 550px) {
+      .card { padding: 20px 12px 28px; }
+      .main-title { font-size: 1.7rem; letter-spacing: 3px; }
+      .field label { min-width: 70px; font-size: 1.1rem; }
+      .field input { font-size: 1rem; padding: 10px 14px; min-width: 130px; }
+      .query-btn { font-size: 1.4rem; letter-spacing: 8px; padding: 12px 20px; max-width: 220px; }
+      .result-header { font-size: 1rem; flex-direction: column; align-items: stretch; gap: 6px; }
+      .score-grid { grid-template-columns: repeat(2, 1fr); }
+      .score-item { font-size: 0.95rem; }
+    }
+    @media (max-width: 400px) {
+      .score-grid { grid-template-columns: 1fr 1fr; }
+    }
+    /* 保证所有边框都是直线，无圆角，无阴影 */
+    .card, .query-section, .result-section, .result-header, .score-grid, .score-item, .field input, .query-btn, .empty-result {
+      box-shadow: none !important;
+      border-radius: 0 !important;
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <!-- 标题：宋体 福建省厦门市初中学业考试成绩查询 -->
+  <h1 class="main-title">
+    福建省厦门市<br style="display: none;">初中学业考试成绩查询
+  </h1>
+
+  <!-- 查询区：姓名 + 准考证号 + 查询键 (无预填信息) -->
+  <div class="query-section">
+    <div class="input-group">
+      <div class="field">
+        <label for="studentName">姓名</label>
+        <input type="text" id="studentName" placeholder="请输入姓名" value="">
+      </div>
+      <div class="field">
+        <label for="studentId">准考证号</label>
+        <input type="text" id="studentId" placeholder="请输入准考证号" value="">
+      </div>
+    </div>
+    <div class="query-btn-wrapper">
+      <button class="query-btn" id="queryBtn">查询</button>
+    </div>
+  </div>
+
+  <!-- 结果展示区 -->
+  <div class="result-section" id="resultSection">
+    <!-- 姓名 + 准考证号 (初始为空) -->
+    <div id="resultHeader" class="result-header">
+      <span class="label">姓名</span>
+      <span class="value" id="displayName">——</span>
+      <span class="label">准考证号</span>
+      <span class="value" id="displayId">——</span>
+    </div>
+    <!-- 各科成绩网格 (初始隐藏，查询后显示) -->
+    <div id="scoreGrid" class="score-grid hidden">
+      <div class="score-item"><span class="subject">数学</span><span class="value" id="mathScore">139</span></div>
+      <div class="score-item"><span class="subject">语文</span><span class="value" id="chineseScore">119</span></div>
+      <div class="score-item"><span class="subject">英语</span><span class="value" id="englishScore">135.5</span></div>
+      <div class="score-item"><span class="subject">物理</span><span class="value" id="physicsScore">69.5</span></div>
+      <div class="score-item"><span class="subject">化学</span><span class="value" id="chemistryScore">81.5</span></div>
+      <div class="score-item"><span class="subject">历史</span><span class="value" id="historyScore">78</span></div>
+      <div class="score-item"><span class="subject">政治</span><span class="value" id="politicsScore">99</span></div>
+    </div>
+    <!-- 空状态提示 (初始显示) -->
+    <div id="emptyPlaceholder" class="empty-result">
+      ⚬ 请输入姓名和准考证号后查询 ⚬
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // 固定成绩数据 (完全符合要求)
+    const SCORE_DATA = {
+      math: '139',
+      chinese: '119',
+      english: '135.5',
+      physics: '69.5',
+      chemistry: '81.5',
+      history: '78',
+      politics: '99'
+    };
+
+    const nameInput = document.getElementById('studentName');
+    const idInput = document.getElementById('studentId');
+    const queryBtn = document.getElementById('queryBtn');
+    const displayName = document.getElementById('displayName');
+    const displayId = document.getElementById('displayId');
+    const scoreGrid = document.getElementById('scoreGrid');
+    const emptyPlaceholder = document.getElementById('emptyPlaceholder');
+
+    // 各科分数元素
+    const mathEl = document.getElementById('mathScore');
+    const chineseEl = document.getElementById('chineseScore');
+    const englishEl = document.getElementById('englishScore');
+    const physicsEl = document.getElementById('physicsScore');
+    const chemistryEl = document.getElementById('chemistryScore');
+    const historyEl = document.getElementById('historyScore');
+    const politicsEl = document.getElementById('politicsScore');
+
+    // 更新结果：显示姓名、准考证号 + 成绩网格 (固定分数)
+    function updateResult(name, id) {
+      // 姓名、准考证
+      displayName.textContent = name || '——';
+      displayId.textContent = id || '——';
+
+      
+      mathEl.textContent = SCORE_DATA.math;
+      chineseEl.textContent = SCORE_DATA.chinese;
+      englishEl.textContent = SCORE_DATA.english;
+      physicsEl.textContent = SCORE_DATA.physics;
+      chemistryEl.textContent = SCORE_DATA.chemistry;
+      historyEl.textContent = SCORE_DATA.history;
+      politicsEl.textContent = SCORE_DATA.politics;
+
+      
+      scoreGrid.classList.remove('hidden');
+      emptyPlaceholder.classList.add('hidden');
+    }
+
+    
+    function handleQuery() {
+      const name = nameInput.value.trim();
+      const id = idInput.value.trim();
+      const displayNameVal = name || '——';
+      const displayIdVal = id || '——';
+      updateResult(displayNameVal, displayIdVal);
+    }
+
+    queryBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      handleQuery();
+    });
+    nameInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        queryBtn.click();
+      }
+    });
+    idInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        queryBtn.click();
+      }
+    });
+
+    // 页面加载后，不预填任何信息，显示空状态（成绩网格隐藏，空状态可见）
+    // 确保初始状态：无预填，成绩隐藏，空状态显示
+    window.addEventListener('DOMContentLoaded', function() {
+      // 强制清空输入框 (防止浏览器自动填充)
+      nameInput.value = '';
+      idInput.value = '';
+      // 显示空状态，隐藏成绩网格
+      scoreGrid.classList.add('hidden');
+      emptyPlaceholder.classList.remove('hidden');
+      // 姓名/准考证显示——
+      displayName.textContent = '——';
+      displayId.textContent = '——';
+      // 成绩数据保留，但不显示网格
+    });
+
+    // 额外：若有用户点击查询但输入为空，依然显示成绩（姓名/准考证显示——）
+    // 但完全符合要求：查询后依次显示姓名、准考证号和所有成绩
+  })();
+</script>
+</body>
+</html>
