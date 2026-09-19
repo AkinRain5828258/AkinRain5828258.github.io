@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>荔园文学社 · 同安实验中学</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%232f4a37'/%3E%3Ctext x='32' y='43' font-size='30' text-anchor='middle' fill='%23f6f2e8' font-family='serif'%3E%E8%8D%94%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<style>
+:root{
+  --green-900:#1e3327;
+  --green-700:#2f4a37;
+  --green-500:#4a6b52;
+  --green-200:#c9d4c4;
+  --paper:#f6f2e8;
+  --paper-deep:#ede6d3;
+  --gold:#b8893f;
+  --litchi:#b85c4a;
+  --ink:#232c26;
+  --ink-soft:#5a635b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Noto Serif SC",serif;
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+
+/* ===== 顶部导航 ===== */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(246,242,232,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--green-200);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;padding:14px 32px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
+.brand{display:flex;align-items:center;gap:14px}
+.brand img{width:48px;height:48px;border-radius:50%;object-fit:cover}
+.brand-name{line-height:1.2}
+.brand-name .cn{font-size:19px;font-weight:700;letter-spacing:2px;color:var(--green-900)}
+.brand-name .en{font-family:"Noto Sans SC",sans-serif;font-size:10px;letter-spacing:2.5px;color:var(--ink-soft);text-transform:uppercase}
+.menu{display:flex;gap:34px;font-size:15px;letter-spacing:2px}
+.menu a{color:var(--ink-soft);position:relative;padding:4px 0;transition:color .2s}
+.menu a:hover{color:var(--green-700)}
+.menu a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--gold);transition:width .25s}
+.menu a:hover::after{width:100%}
+.nav-toggle{display:none;background:none;border:none;cursor:pointer;width:44px;height:44px;position:relative}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--green-900);margin:5px auto;transition:.3s}
+
+/* ===== Hero ===== */
+.hero{
+  position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#eef0e4 0%,#e3e6d2 55%,#d4dcc2 100%);
+}
+.hero-inner{
+  max-width:1200px;margin:0 auto;padding:90px 32px 100px;
+  display:grid;grid-template-columns:1.25fr .75fr;gap:60px;align-items:center;
+}
+.hero-eyebrow{
+  font-family:"Noto Sans SC",sans-serif;font-size:13px;letter-spacing:6px;
+  color:var(--gold);margin-bottom:26px;display:flex;align-items:center;gap:14px;
+}
+.hero-eyebrow::before{content:"";width:42px;height:1px;background:var(--gold)}
+.hero h1{
+  font-size:clamp(44px,6.5vw,84px);font-weight:900;line-height:1.15;
+  color:var(--green-900);letter-spacing:6px;
+}
+.hero h1 .small{display:block;font-size:.32em;font-weight:500;letter-spacing:8px;color:var(--ink-soft);margin-top:14px}
+.hero-quote{
+  margin-top:34px;font-size:19px;line-height:2;color:var(--ink);max-width:520px;
+}
+.hero-quote em{font-style:normal;color:var(--litchi);font-weight:600}
+.hero-actions{margin-top:42px;display:flex;gap:18px;flex-wrap:wrap}
+.btn{
+  display:inline-block;padding:14px 34px;font-size:15px;letter-spacing:3px;
+  border:1px solid var(--green-700);cursor:pointer;transition:.25s;font-family:inherit;
+}
+.btn-primary{background:var(--green-700);color:var(--paper)}
+.btn-primary:hover{background:var(--green-900)}
+.btn-ghost{background:transparent;color:var(--green-700)}
+.btn-ghost:hover{background:rgba(47,74,55,.08)}
+.hero-badge{display:flex;justify-content:center}
+.hero-badge img{
+  width:min(340px,100%);border-radius:50%;
+  box-shadow:0 30px 60px -20px rgba(30,51,39,.35);
+}
+.hero-stats{
+  border-top:1px solid var(--green-200);
+  max-width:1200px;margin:0 auto;padding:26px 32px 0;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+}
+.stat .num{font-size:30px;font-weight:700;color:var(--green-700)}
+.stat .lbl{font-family:"Noto Sans SC",sans-serif;font-size:12px;letter-spacing:2px;color:var(--ink-soft);margin-top:2px}
+
+/* ===== 通用 section ===== */
+.section{max-width:1200px;margin:0 auto;padding:96px 32px}
+.sec-head{margin-bottom:56px}
+.sec-no{
+  font-family:"Noto Sans SC",sans-serif;font-size:12px;letter-spacing:4px;
+  color:var(--gold);margin-bottom:14px;
+}
+.sec-title{font-size:clamp(30px,3.6vw,44px);font-weight:700;color:var(--green-900);letter-spacing:3px}
+.sec-sub{margin-top:16px;color:var(--ink-soft);max-width:640px;font-size:16px}
+
+/* ===== 关于 ===== */
+.about{background:var(--paper-deep)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.about-text p{font-size:17px;margin-bottom:22px;color:var(--ink)}
+.about-text .lead{
+  font-size:22px;line-height:1.9;color:var(--green-900);font-weight:600;
+  border-left:3px solid var(--gold);padding-left:22px;margin-bottom:30px;
+}
+.about-img{position:relative}
+.about-img img{width:100%;height:460px;object-fit:cover}
+.about-img .caption{
+  position:absolute;left:20px;bottom:20px;background:var(--paper);
+  padding:10px 18px;font-size:13px;letter-spacing:2px;color:var(--green-700);
+}
+.sign{margin-top:30px;font-size:15px;color:var(--ink-soft);font-style:italic}
+
+/* ===== 创作方向 ===== */
+.directions{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.dir{
+  border-top:2px solid var(--green-700);padding:26px 22px 30px;
+  background:rgba(255,255,255,.45);transition:.25s;
+}
+.dir:hover{background:#fff;transform:translateY(-4px)}
+.dir .icon{width:40px;height:40px;margin-bottom:18px;color:var(--gold)}
+.dir h3{font-size:21px;letter-spacing:3px;color:var(--green-900);margin-bottom:10px}
+.dir p{font-size:14.5px;color:var(--ink-soft);line-height:1.85}
+.dir .tag{
+  display:inline-block;margin-top:16px;font-family:"Noto Sans SC",sans-serif;
+  font-size:12px;letter-spacing:2px;color:var(--litchi);
+}
+/* ===== 社员作品 ===== */
+.works{background:var(--green-900);color:#e9e4d4}
+.works .sec-no{color:#c9a86a}
+.works .sec-title{color:#f2edda}
+.works .sec-sub{color:#a9b3a2}
+.works-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid rgba(242,237,218,.18)}
+.work{
+  padding:38px 30px;border-bottom:1px solid rgba(242,237,218,.18);
+  border-right:1px solid rgba(242,237,218,.18);
+}
+.work:nth-child(3n){border-right:none}
+.work .genre{font-family:"Noto Sans SC",sans-serif;font-size:12px;letter-spacing:3px;color:#c9a86a}
+.work h3{font-size:24px;margin:16px 0 14px;letter-spacing:2px;color:#f2edda;line-height:1.5}
+.work p.excerpt{font-size:15px;color:#b9c0b2;line-height:1.95}
+.work .meta{margin-top:22px;font-family:"Noto Sans SC",sans-serif;font-size:12.5px;letter-spacing:2px;color:#8a9484}
+
+/* ===== 历程时间轴 ===== */
+.timeline{display:grid;grid-template-columns:1fr;gap:0}
+.tl-row{
+  display:grid;grid-template-columns:110px 40px 1fr;gap:0;align-items:stretch;
+}
+.tl-date{
+  text-align:right;padding:26px 20px 26px 0;
+  font-family:"Noto Sans SC",sans-serif;font-size:15px;color:var(--green-700);font-weight:500;
+}
+.tl-axis{position:relative}
+.tl-axis::before{
+  content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--green-200);
+  transform:translateX(-50%);
+}
+.tl-dot{
+  position:absolute;left:50%;top:34px;width:11px;height:11px;border-radius:50%;
+  background:var(--paper);border:2px solid var(--gold);transform:translateX(-50%);
+}
+.tl-content{padding:26px 0 36px 24px}
+.tl-content h3{font-size:20px;letter-spacing:2px;color:var(--green-900);margin-bottom:6px}
+.tl-content p{font-size:15px;color:var(--ink-soft);max-width:560px}
+
+/* ===== 招新 CTA ===== */
+.join{position:relative;color:#fff;overflow:hidden}
+.join-bg{position:absolute;inset:0}
+.join-bg img{width:100%;height:100%;object-fit:cover;filter:saturate(.85)}
+.join::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(120deg,rgba(20,38,28,.94) 0%,rgba(30,55,40,.82) 60%,rgba(30,55,40,.55) 100%);
+}
+.join-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:110px 32px}
+.join .sec-no{color:#d8b578}
+.join h2{font-size:clamp(32px,4vw,50px);font-weight:900;letter-spacing:4px;line-height:1.4}
+.join p{margin-top:22px;max-width:560px;font-size:17px;color:#dde2d4;line-height:2}
+.join-list{margin-top:34px;display:flex;flex-wrap:wrap;gap:14px 34px;font-size:15px;color:#e9e4d4}
+.join-list li{list-style:none;display:flex;align-items:center;gap:10px}
+.join-list li::before{content:"";width:6px;height:6px;background:var(--gold);transform:rotate(45deg)}
+.join .btn-primary{margin-top:44px;background:#f2edda;color:var(--green-900);border-color:#f2edda}
+.join .btn-primary:hover{background:#fff}
+
+/* ===== 页脚 ===== */
+footer{background:var(--green-900);color:#a9b3a2}
+.foot-inner{
+  max-width:1200px;margin:0 auto;padding:60px 32px 30px;
+  display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:40px;
+}
+.foot-brand{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.foot-brand img{width:52px;height:52px;border-radius:50%}
+.foot-brand .cn{font-size:20px;font-weight:700;color:#f2edda;letter-spacing:3px}
+.foot h4{font-family:"Noto Sans SC",sans-serif;font-size:13px;letter-spacing:3px;color:#d8b578;margin-bottom:16px}
+.foot p,.foot li{font-size:14px;line-height:2;list-style:none}
+.foot li a:hover{color:#f2edda}
+.foot-bottom{
+  border-top:1px solid rgba(242,237,218,.12);
+  max-width:1200px;margin:0 auto;padding:22px 32px;
+  font-family:"Noto Sans SC",sans-serif;font-size:12px;letter-spacing:1px;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+}
+
+/* toast */
+.toast{
+  position:fixed;left:50%;bottom:40px;transform:translateX(-50%) translateY(20px);
+  background:var(--green-900);color:var(--paper);padding:14px 28px;
+  font-size:14px;letter-spacing:2px;opacity:0;pointer-events:none;transition:.3s;z-index:99;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== 响应式 ===== */
+@media (max-width:900px){
+  .hero-inner{grid-template-columns:1fr;padding:60px 24px 70px;gap:40px}
+  .hero-badge{order:-1}
+  .hero-badge img{width:min(220px,60%)}
+  .hero-stats{grid-template-columns:repeat(2,1fr);padding:22px 24px 0}
+  .about-grid{grid-template-columns:1fr;gap:36px}
+  .directions{grid-template-columns:repeat(2,1fr)}
+  .works-grid{grid-template-columns:1fr}
+  .work{border-right:none}
+  .foot-inner{grid-template-columns:1fr;gap:28px}
+  .section{padding:64px 24px}
+  .menu{
+    position:fixed;inset:0;background:var(--paper);flex-direction:column;
+    align-items:center;justify-content:center;gap:30px;font-size:20px;
+    transform:translateX(100%);transition:.3s;z-index:60;
+  }
+  .menu.open{transform:translateX(0)}
+  .nav-toggle{display:block;z-index:70;position:relative}
+}
+@media (max-width:560px){
+  .directions{grid-template-columns:1fr}
+  .tl-date{font-size:13px;padding-right:10px}
+  .tl-row{grid-template-columns:80px 28px 1fr}
+  .brand-name .en{font-size:11px}
+  .hero-eyebrow{font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 导航 ===== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RSKWbWs23ordcxxuePocjIn5nSb" alt="荔园文学社徽章">
+      <div class="brand-name">
+        <div class="cn">荔园文学社</div>
+        <div class="en">Tong'an Experimental · LiYuan Society</div>
+      </div>
+    </a>
+    <div class="menu" id="menu">
+      <a href="#about">关于荔园</a>
+      <a href="#directions">创作方向</a>
+      <a href="#works">社员作品</a>
+      <a href="#timeline">文苑历程</a>
+      <a href="#join">加入我们</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="菜单"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">同安实验中学 · 成立于 2024 年秋</div>
+      <h1>
+        荔园文学社
+        <span class="small">一颗荔枝的心事，一页青春的回响</span>
+      </h1>
+      <p class="hero-quote">
+        我们相信，校园里不只有分数与铃声，还有檐下的雨、窗前的光、
+        以及少年笔下那些<em>尚未说尽的话</em>。荔园文学社，为这些话而来。
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#join">加入荔园</a>
+        <a class="btn btn-ghost" href="#works">读社员作品</a>
+      </div>
+    </div>
+    <div class="hero-badge">
+      <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RSKWbWs23ordcxxuePocjIn5nSb" alt="荔园文学社圆形徽章">
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="num">2024</div><div class="lbl">社团创立年份</div></div>
+    <div class="stat"><div class="num">120+</div><div class="lbl">在册社员</div></div>
+    <div class="stat"><div class="num">4</div><div class="lbl">创作方向小组</div></div>
+    <div class="stat"><div class="num">200+</div><div class="lbl">累计发表习作</div></div>
+  </div>
+</header>
+
+<!-- ===== 关于 ===== -->
+<section class="about" id="about">
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-no">壹 · ABOUT</div>
+      <div class="sec-title">关于荔园</div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="lead">"荔园"二字，取校园中那片荔枝林为名，也取"荔"与"丽"同音——愿笔下的文字，都像初夏枝头的果子，饱满而真诚。</p>
+        <p>荔园文学社成立于 2024 年秋季，隶属同安实验中学，是一个由语文组指导、学生自主运营的文学社团。我们读书、写字、办沙龙、出校刊，也在校园的榕树下、图书馆的角落，听彼此讲各自的故事。</p>
+        <p>我们不要求你已是"作家"，只要求你愿意读、愿意写、愿意把心里那个声音认真地写下来。在这里，每一次作业之外的落笔，都值得被认真对待。</p>
+        <div class="sign">—— 荔园文学社 全体指导老师</div>
+      </div>
+      <div class="about-img">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Gn2Ybyi65oB2CPx85JTcVOlxnpe" alt="荔枝枝叶特写">
+        <div class="caption">校园荔林 · 初夏</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 创作方向 ===== -->
+<section class="section" id="directions">
+  <div class="sec-head">
+    <div class="sec-no">贰 · CRAFT</div>
+    <div class="sec-title">四个创作方向</div>
+    <div class="sec-sub">社员可自由加入一至两个小组，每周固定活动，互读互改，学期末结集成册。</div>
+  </div>
+  <div class="directions">
+    <div class="dir">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19V5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M8 8h6M8 12h8M8 16h5"/></svg>
+      <h3>散文组</h3>
+      <p>记录校园日常、故乡风物与少年心事。从一片落叶写到一顿家常饭，练习把生活过成文章。</p>
+      <span class="tag">随笔 · 风物 · 人物</span>
+    </div>
+    <div class="dir">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-7-5.5-7-11a7 7 0 0114 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      <h3>诗歌组</h3>
+      <p>每周一首，短歌成行。读泰戈尔、读余光中，也写晚自习窗外那一颗忽明忽暗的星。</p>
+      <span class="tag">新诗 · 旧体 · 译诗</span>
+    </div>
+    <div class="dir">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+      <h3>小说组</h3>
+      <p>从一千字的小短篇开始，搭建自己的人物与世界。这里也欢迎悬疑、科幻与校园怪谈。</p>
+      <span class="tag">短篇 · 类型 · 连载</span>
+    </div>
+    <div class="dir">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
+      <h3>评论组</h3>
+      <p>一本书、一部电影、一场展览。练习有依据地喜欢，也有依据地不喜欢。</p>
+      <span class="tag">书评 · 影评 · 文化观察</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 社员作品 ===== -->
+<section class="works section" id="works">
+  <div class="sec-head">
+    <div class="sec-no">叁 · VOICES</div>
+    <div class="sec-title">社员习作选</div>
+    <div class="sec-sub">以下为本学期社员习作节选，完整版收录于社刊《荔园》及公众号。作品为示例展示，可替换为真实稿件。</div>
+  </div>
+  <div class="works-grid">
+    <article class="work">
+      <div class="genre">散文 · 风物</div>
+      <h3>初夏荔枝红了</h3>
+      <p class="excerpt">"外婆说，荔枝要带叶摘才甜。我踮起脚，指尖刚够到那颗最红的果，背后来人一把抱住了我。风穿过整片林子，沙沙地，像谁把一页旧信翻了过去。"</p>
+      <div class="meta">林同学 · 初二（3）班</div>
+    </article>
+    <article class="work">
+      <div class="genre">新诗</div>
+      <h3>晚自习的灯</h3>
+      <p class="excerpt">"整栋教学楼都低着头 / 只有三楼最靠西的那扇窗 / 还亮着。我想知道 / 是哪一支笔，比我睡得更晚。"</p>
+      <div class="meta">苏同学 · 高一（1）班</div>
+    </article>
+    <article class="work">
+      <div class="genre">短篇小说 · 节选</div>
+      <h3>后山的风</h3>
+      <p class="excerpt">"他把那本翻烂了的《小王子》埋进土里时，并没有哭。三年后我回到后山，那地方什么也没长出来，倒是风一吹，满山都是读了一半的句子。"</p>
+      <div class="meta">陈同学 · 初三（7）班</div>
+    </article>
+  </div>
+</section>
+
+<!-- ===== 文苑历程 ===== -->
+<section class="section" id="timeline">
+  <div class="sec-head">
+    <div class="sec-no">肆 · JOURNEY</div>
+    <div class="sec-title">文苑历程</div>
+  </div>
+  <div class="timeline">
+    <div class="tl-row">
+      <div class="tl-date">2024.09</div>
+      <div class="tl-axis"><span class="tl-dot"></span></div>
+      <div class="tl-content">
+        <h3>荔园文学社正式成立</h3>
+        <p>由语文组牵头发起，面向全校招收第一批社员，第一次全体大会在图书馆三楼阅览室举行。</p>
+      </div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-date">2024.10</div>
+      <div class="tl-axis"><span class="tl-dot"></span></div>
+      <div class="tl-content">
+        <h3>首届招新与分组</h3>
+        <p>四个创作小组成立，明确每周活动时间与指导老师，制定社内习作互读制度。</p>
+      </div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-date">2024.11</div>
+      <div class="tl-axis"><span class="tl-dot"></span></div>
+      <div class="tl-content">
+        <h3>第一期写作工坊</h3>
+        <p>以"校园里的一棵植物"为题，开展现场写作与互评，产出第一批社员习作。</p>
+      </div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-date">2025.05</div>
+      <div class="tl-axis"><span class="tl-dot"></span></div>
+      <div class="tl-content">
+        <h3>校刊《荔园》创刊号出刊</h3>
+        <p>收录社员散文、诗歌、小说与书评共四十二篇，校内印发三百册，反响热烈。</p>
+      </div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-date">2025.09</div>
+      <div class="tl-axis"><span class="tl-dot"></span></div>
+      <div class="tl-content">
+        <h3>第二届招新开启</h3>
+        <p>新学期纳新宣讲会与试写活动同步启动，欢迎每一个愿意写字的你。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 加入我们 ===== -->
+<section class="join" id="join">
+  <div class="join-bg">
+    <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/GFnrbSTitoUX2KxgBwKcgAZInSg" alt="书桌与稿纸">
+  </div>
+  <div class="join-inner">
+    <div class="sec-no">伍 · JOIN US</div>
+    <h2>如果你也有话想说，<br>荔园为你留了一支笔。</h2>
+    <p>不要求有发表经历，不设写作门槛。只要你愿意每周留出一小时，读一本书、写几行字，再和一群人聊聊它——欢迎来敲文学社的门。</p>
+    <ul class="join-list">
+      <li>每周二、周四下午第八节活动</li>
+      <li>指导老师全程陪伴</li>
+      <li>每学期社刊收录社员作品</li>
+      <li>对外征文与比赛统一推荐</li>
+    </ul>
+    <button class="btn btn-primary" id="joinBtn">立即报名加入</button>
+  </div>
+</section>
+
+<!-- ===== 页脚 ===== -->
+<footer>
+  <div class="foot-inner">
+    <div>
+      <div class="foot-brand">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RSKWbWs23ordcxxuePocjIn5nSb" alt="荔园文学社徽章">
+        <div class="cn">荔园文学社</div>
+      </div>
+      <p>同安实验中学学生文学社团<br>笔底有荔，文里有光。</p>
+    </div>
+    <div>
+      <h4>站内导航</h4>
+      <ul>
+        <li><a href="#about">关于荔园</a></li>
+        <li><a href="#directions">创作方向</a></li>
+        <li><a href="#works">社员作品</a></li>
+        <li><a href="#timeline">文苑历程</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>联系我们</h4>
+      <ul>
+        <li>指导单位：同安实验中学语文组</li>
+        <li>活动地点：图书馆三楼阅览室</li>
+        <li>招新季：每年九月、三月</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2024–2025 荔园文学社 LiYuan Literature Society</span>
+    <span>本页为社团官网示例 · 内容可替换为真实信息</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast">报名通道已开启，请于活动时间到图书馆三楼文学社登记</div>
+
+<script>
+// 移动端菜单
+var toggle=document.getElementById('navToggle');
+var menu=document.getElementById('menu');
+toggle.addEventListener('click',function(){menu.classList.toggle('open');});
+menu.querySelectorAll('a').forEach(function(a){
+  a.addEventListener('click',function(){menu.classList.remove('open');});
+});
+// 报名 toast
+var toast=document.getElementById('toast');
+document.getElementById('joinBtn').addEventListener('click',function(){
+  toast.classList.add('show');
+  clearTimeout(window.__t);
+  window.__t=setTimeout(function(){toast.classList.remove('show');},2600);
+});
+</script>
+</body>
+</html>
